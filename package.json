@@ -1,0 +1,25 @@
+{
+  "name": "museum",
+  "version": "1.0.0",
+  "description": "Project php museum for OC",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/morvan.aurelien/museum.git"
+  },
+  "keywords": [
+    "museum"
+  ],
+  "author": "Aurelien Morvan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/morvan.aurelien/museum/issues"
+  },
+  "homepage": "https://gitlab.com/morvan.aurelien/museum#README"
+}
