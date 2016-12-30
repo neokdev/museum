@@ -1,3 +1,6 @@
+# Sensio Insight
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/f6ab889d-2297-4989-9109-1caafd32fe9e/small.png)](https://insight.sensiolabs.com/projects/f6ab889d-2297-4989-9109-1caafd32fe9e)
+
 # Enoncé
 
 ### Contexte
