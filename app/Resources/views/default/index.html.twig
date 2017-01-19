@@ -90,8 +90,24 @@
 
         <div class="col-xs-12 col-md-offset-1 col-md-7 background-form-contact">
             {{ form_start(form) }}
-                {{ form_row(form) }}
-                <button type="submit">Envoyer</button>
+                <div class="form-group">
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.email) }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.subject) }}
+                    {{ form_widget(form.subject, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.message) }}
+                    {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <button type="submit" class="btn btn-default">Envoyer</button>
             {{ form_end(form) }}
             {#<form>#}
                 {#<div class="form-group">#}
