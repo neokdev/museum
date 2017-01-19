@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -32,8 +32,7 @@ class ContactType extends AbstractType
             ])
             ->add('message', TextareaType::class, [
                 'label' => 'Message',
-            ])
-            ->getForm();
+            ]);
     }
 
     /**
