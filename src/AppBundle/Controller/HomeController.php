@@ -26,6 +26,11 @@ class HomeController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->render('order/index.html.twig');
+        $form = $this->get('app.contact')->sendFormByMail($request);
+
+        return $this->render(
+            'default/index.html.twig',
+            array('form' => $form)
+        );
     }
 }
