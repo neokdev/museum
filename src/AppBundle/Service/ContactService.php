@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\FormView;
 
 /**
  * Class ContactService
@@ -52,7 +53,9 @@ class ContactService
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\Form\FormView
+     * @throws \RuntimeException
+     *
+     * @return FormView
      */
     public function sendFormByMail(Request $request)
     {
@@ -62,14 +65,23 @@ class ContactService
         if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
 
+            if ($datas) {
                 $mail = \Swift_Message::newInstance()
                     ->setSubject($datas['subject'])
                     ->setFrom($datas['email'])
-                    ->setTo('morvan.aurelien@gmail.com')
+                    ->setTo('contact@aurelien-morvan.fr')
                     ->setBody($datas['message']);
 
                 $this->mailer->send($mail);
 
+                $responseMail = \Swift_Message::newInstance()
+                    ->setSubject('Confirmation de réception de votre mail')
+                    ->setFrom('contact@aurelien-morvan.fr')
+                    ->setTo($datas['email'])
+                    ->setBody('Nous confirmons la réception de votre email');
+
+                $this->mailer->send($responseMail);
+            }
         }
 
         return $form->createView();
