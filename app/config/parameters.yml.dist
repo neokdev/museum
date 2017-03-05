@@ -18,5 +18,5 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    recipient_adress_contact: aurelien.morvan@dartybox.com
-    recipient_name_contact: Aurélien Morvan
+    adress_contact: ~
+    name_contact: ~
