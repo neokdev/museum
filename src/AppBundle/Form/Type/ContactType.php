@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,9 +34,14 @@ class ContactType extends AbstractType
                 'label' => 'Votre email:',
                 'required' => true,
             ])
-            ->add('subject', TextType::class, [
+            ->add('subject', ChoiceType::class, [
                 'label' => 'Sujet:',
                 'required' => true,
+                'choices' => [
+                    'Horaires d\'ouverture' => 'Horaires d\'ouverture',
+                    'Moyens de paiement' => 'Moyens de paiement',
+                    'Autre demande' => 'Autre demande',
+                ],
             ])
             ->add('message', TextareaType::class, [
                 'label' => 'Message',
