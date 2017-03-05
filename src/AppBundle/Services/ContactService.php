@@ -33,6 +33,8 @@ class ContactService
     /**
      * @param Request $request
      *
+     * @throws \LogicException
+     *
      * @return FormView
      */
     public function sendEmailFromContactForm(Request $request)
@@ -51,11 +53,11 @@ class ContactService
                         )
                     );
                 }
-                $this->mailerService->sendEmailByFormContact(
-                    $datas['name'],
+                $this->mailerService->sendEmail(
                     $datas['subject'],
-                    $datas['email'],
-                    $datas['message']
+                    $datas['message'],
+                    $datas['name'],
+                    $datas['email']
                 );
 
                 $this->mailerService->automaticReplyContactForm(
