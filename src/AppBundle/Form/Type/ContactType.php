@@ -8,6 +8,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class ContactType
@@ -23,15 +27,19 @@ class ContactType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Votre nom:',
+                'required' => true,
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Votre email:',
+                'required' => true,
             ])
             ->add('subject', TextType::class, [
                 'label' => 'Sujet:',
+                'required' => true,
             ])
             ->add('message', TextareaType::class, [
                 'label' => 'Message',
+                'required' => true,
             ]);
     }
 
