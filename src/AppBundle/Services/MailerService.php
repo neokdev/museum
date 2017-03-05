@@ -13,10 +13,10 @@ class MailerService
     private $mailer;
 
     /** @var  string */
-    private $recipientAdress;
+    private $emailMuseum;
 
     /** @var  string */
-    private $recipientName;
+    private $nameEmailMuseum;
 
     /** @var TwigEngine */
     private $templating;
@@ -25,30 +25,44 @@ class MailerService
      * MailerService constructor.
      *
      * @param \Swift_Mailer $mailer
-     * @param string        $recipientAdress
-     * @param string        $recipientName
+     * @param string        $emailMuseum
+     * @param string        $nameEmailMuseum
      * @param TwigEngine    $templating
      */
-    public function __construct(\Swift_Mailer $mailer, $recipientAdress, $recipientName, TwigEngine $templating)
+    public function __construct(\Swift_Mailer $mailer, $emailMuseum, $nameEmailMuseum, TwigEngine $templating)
     {
         $this->mailer = $mailer;
-        $this->recipientAdress = $recipientAdress;
-        $this->recipientName = $recipientName;
+        $this->emailMuseum = $emailMuseum;
+        $this->nameEmailMuseum = $nameEmailMuseum;
         $this->templating = $templating;
     }
 
     /**
-     * @param string $sender
      * @param string $subject
-     * @param string $emailSender
      * @param string $message
+     * @param null   $senderName
+     * @param null   $emailSender
+     * @param null   $recipientTo
+     * @param null   $recipientToName
      */
-    public function sendEmailByFormContact($sender, $subject, $emailSender, $message)
-    {
+    public function sendEmail(
+        $subject,
+        $message,
+        $senderName = null,
+        $emailSender = null,
+        $recipientTo = null,
+        $recipientToName = null
+    ) {
+        $senderName = $senderName ? $senderName : $this->nameEmailMuseum;
+        $senderAdress = $emailSender ? $emailSender : $this->emailMuseum;
+
+        $recipientName = $recipientToName ? $recipientToName : $this->nameEmailMuseum;
+        $recipientAdress = $recipientTo ? $recipientTo : $this->emailMuseum;
+
         $mail = \Swift_Message::newInstance()
             ->setSubject($subject)
-            ->setFrom($emailSender, $sender)
-            ->setTo($this->recipientAdress, $this->recipientName)
+            ->setFrom($senderAdress, $senderName)
+            ->setTo($recipientAdress, $recipientName)
             ->setBody(
                 $this->templating->render(
                     'email/contact_form.html.twig',
@@ -70,7 +84,7 @@ class MailerService
     {
         $mail = \Swift_Message::newInstance()
             ->setSubject('Confirmation de réception')
-            ->setFrom($this->recipientAdress, $this->recipientName)
+            ->setFrom($this->emailMuseum, $this->nameEmailMuseum)
             ->setTo($emailSender)
             ->setBody(
                 $this->templating->render(
