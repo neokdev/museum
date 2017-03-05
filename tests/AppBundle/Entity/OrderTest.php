@@ -23,7 +23,8 @@ class OrderTest extends AbstractEntityTest
             ['dateVisit', 'datetime', new \DateTime()],
             ['typeTicket', 'string', 'Demi-journée'],
             ['email', 'string', 'john@doe.com'],
-            ['uniqCode', 'string', 'ABCDE123456!'],
+            ['orderNumber', 'string', 'ABCDE123456!'],
+            ['totalPrice', 'string', '250.00'],
             ['tickets', 'collection', new ArrayCollection([$mockTicket])],
         ];
     }

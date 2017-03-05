@@ -47,9 +47,16 @@ class Order
     /**
      * @var string
      *
-     * @ORM\Column(name="uniq_code", type="string", length=30)
+     * @ORM\Column(name="order_number", type="string", length=30)
      */
-    private $uniqCode;
+    private $orderNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="total_price", type="string")
+     */
+    private $totalPrice;
 
     /**
      * @var Ticket[]
@@ -137,19 +144,39 @@ class Order
     /**
      * @return string
      */
-    public function getUniqCode()
+    public function getOrderNumber()
     {
-        return $this->uniqCode;
+        return $this->orderNumber;
     }
 
     /**
-     * @param string $uniqCode
+     * @param string $orderNumber
      *
      * @return Order
      */
-    public function setUniqCode($uniqCode)
+    public function setOrderNumber($orderNumber)
     {
-        $this->uniqCode = $uniqCode;
+        $this->orderNumber = $orderNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTotalPrice()
+    {
+        return $this->totalPrice;
+    }
+
+    /**
+     * @param string $totalPrice
+     *
+     * @return Order
+     */
+    public function setTotalPrice($totalPrice)
+    {
+        $this->totalPrice = $totalPrice;
 
         return $this;
     }
