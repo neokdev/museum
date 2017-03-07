@@ -54,3 +54,7 @@ Le mail doit indiquer:
 - Cahier des charges technique
 - Code source complet du projet versionné avec Git, développé avec le framework PHP Symfony
 - Quelques (4-5) tests unitaires et fonctionnels que l’on peut exécuter
+
+# Présentation technique du projet
+## Modèles de données
+![Modèle de données](/docs/museum.png)
