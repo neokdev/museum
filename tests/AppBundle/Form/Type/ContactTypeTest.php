@@ -7,6 +7,8 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 /**
  * Class ContactTypeTest
+ *
+ * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class ContactTypeTest extends TypeTestCase
 {
@@ -23,6 +25,8 @@ class ContactTypeTest extends TypeTestCase
         ];
 
         $form = $this->factory->create(ContactType::class);
+
+        static::assertEquals('contact', $form->getName());
 
         $form->submit($formData);
 
