@@ -10,27 +10,23 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class HomeController
  *
- * @package AppBundle\Controller
- * @author  Aurélien Morvan <contact@aurelien-morvan.fr>
- *
- * @Route("/")
+ * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class HomeController extends Controller
 {
     /**
-     * @param Request $request
+     * @param Request $request Contain user request
      *
-     * @Route("", name="homepage")
+     * @Route("/", name="homepage")
      *
-     * @return Response
+     * @return Response Return an http response
      */
     public function indexAction(Request $request)
     {
-        $form = $this->get('app.contact')->sendFormByMail($request);
+        $form = $this->get('app.contact_service')->sendEmailFromContactForm($request);
 
-        return $this->render(
-            'default/index.html.twig',
-            array('form' => $form)
-        );
+        return $this->render('default/index.html.twig', [
+            'form' => $form,
+        ]);
     }
 }
