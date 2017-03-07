@@ -7,18 +7,25 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Ticket
  *
+ * @author Aurélien Morvan <contact@aurelien-morvan.fr>
+ *
  * @ORM\Table(name="ticket")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TicketRepository")
  */
 class Ticket
 {
-    const NORMAL_RATE = 16;
-    const CHILD_RATE = 8;
-    const SENIOR_RATE = 12;
-    const REDUCED_RATE = 10;
+    const
+        /** @var int Normal ticket price */
+        NORMAL_RATE = 16,
+        /** @var int Children ticket price */
+        CHILD_RATE = 8,
+        /** @var int Senior ticket price */
+        SENIOR_RATE = 12,
+        /** @var int Reduced ticket price */
+        REDUCED_RATE = 10;
 
     /**
-     * @var int
+     * @var int Ticket id
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
@@ -27,35 +34,35 @@ class Ticket
     private $id;
 
     /**
-     * @var string
+     * @var string Firstname of ticket holder
      *
      * @ORM\Column(name="firstname", type="string", length=38)
      */
     private $firstname;
 
     /**
-     * @var string
+     * @var string Lastname of ticket holder
      *
      * @ORM\Column(name="lastname", type="string", length=38)
      */
     private $lastname;
 
     /**
-     * @var \DateTime
+     * @var \DateTime Birthdate of ticket holder
      *
      * @ORM\Column(name="birth_date", type="datetime")
      */
     private $birthDate;
 
     /**
-     * @var int
+     * @var int Price of ticket holder
      *
      * @ORM\Column(name="price", type="integer")
      */
     private $price;
 
     /**
-     * @var Order
+     * @var Order Id of the order attached to the ticket
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Order", inversedBy="tickets")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
@@ -63,6 +70,8 @@ class Ticket
     private $order;
 
     /**
+     * Return ticket id
+     *
      * @return int
      */
     public function getId()
@@ -71,6 +80,8 @@ class Ticket
     }
 
     /**
+     * Return firstname of the ticket holder
+     *
      * @return string
      */
     public function getFirstname()
@@ -79,7 +90,9 @@ class Ticket
     }
 
     /**
-     * @param string $firstname
+     * Define firstname of the ticket holder
+     *
+     * @param string $firstname Firstname of the ticket holder
      *
      * @return Ticket
      */
@@ -91,6 +104,8 @@ class Ticket
     }
 
     /**
+     * Return lastname of the ticket holder
+     *
      * @return string
      */
     public function getLastname()
@@ -99,7 +114,9 @@ class Ticket
     }
 
     /**
-     * @param string $lastname
+     * Define lastname of the ticket holder
+     *
+     * @param string $lastname Lastname of the ticket holder
      *
      * @return Ticket
      */
@@ -111,6 +128,8 @@ class Ticket
     }
 
     /**
+     * Return birthdate of the ticket holder
+     *
      * @return \DateTime
      */
     public function getBirthDate()
@@ -119,7 +138,9 @@ class Ticket
     }
 
     /**
-     * @param \DateTime $birthDate
+     * Define birthdate of the ticket holder
+     *
+     * @param \DateTime $birthDate Birthdate of the ticket holder
      *
      * @return Ticket
      */
@@ -131,6 +152,8 @@ class Ticket
     }
 
     /**
+     * Return price of the ticket holder
+     *
      * @return int
      */
     public function getPrice()
@@ -139,7 +162,9 @@ class Ticket
     }
 
     /**
-     * @param int $price
+     * Define price of the ticket holder
+     *
+     * @param int $price Price of the ticket holder
      *
      * @return Ticket
      */
@@ -151,6 +176,8 @@ class Ticket
     }
 
     /**
+     * Return order id attached to the ticket
+     *
      * @return Order
      */
     public function getOrder()
@@ -159,7 +186,9 @@ class Ticket
     }
 
     /**
-     * @param Order $order
+     * Define order id attached to the ticket
+     *
+     * @param Order $order Order id attache to the ticket
      *
      * @return Ticket
      */
