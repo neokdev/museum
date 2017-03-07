@@ -394,7 +394,7 @@ class SymfonyRequirements extends RequirementCollection
 
         $this->addRecommendation(
             $requiredPhpVersion,
-            'Vendors should be installed in default to check all requirements.',
+            'Vendors should be installed in order to check all requirements.',
             'Run the <code>composer install</code> command.',
             'Run the "composer install" command.'
         );
