@@ -13,6 +13,7 @@ services:
             - '%recipient_adress%'
             - '%recipient_name%'
             - '@templating'
+            - '@session'
 
 # Service Contact
     app.contact_service:
