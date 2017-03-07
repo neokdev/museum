@@ -3,47 +3,65 @@
 namespace AppBundle\Services;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class MailerService
+ *
+ * This service has been used to send generic email
+ *
+ * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class MailerService
 {
-    /** @var \Swift_Mailer */
+    /** @var \Swift_Mailer Swift mailer service */
     private $mailer;
 
-    /** @var  string */
+    /** @var  string Email of museum define in parameters file */
     private $emailMuseum;
 
-    /** @var  string */
+    /** @var  string Name email of museum define in parameters file */
     private $nameEmailMuseum;
 
-    /** @var TwigEngine */
+    /** @var TwigEngine Twig engine service */
     private $templating;
+
+    /** @var  Session Session service */
+    private $session;
 
     /**
      * MailerService constructor.
      *
-     * @param \Swift_Mailer $mailer
-     * @param string        $emailMuseum
-     * @param string        $nameEmailMuseum
-     * @param TwigEngine    $templating
+     * @param \Swift_Mailer $mailer          Service Swift mailer
+     * @param string        $emailMuseum     Email of museum
+     * @param string        $nameEmailMuseum Name for email of museum
+     * @param TwigEngine    $templating      Service twig engine
+     * @param Session       $session         Service Session
      */
-    public function __construct(\Swift_Mailer $mailer, $emailMuseum, $nameEmailMuseum, TwigEngine $templating)
-    {
+    public function __construct(
+        \Swift_Mailer $mailer,
+        $emailMuseum,
+        $nameEmailMuseum,
+        TwigEngine $templating,
+        Session $session
+    ) {
         $this->mailer = $mailer;
         $this->emailMuseum = $emailMuseum;
         $this->nameEmailMuseum = $nameEmailMuseum;
         $this->templating = $templating;
+        $this->session = $session;
     }
 
     /**
-     * @param string $subject
-     * @param string $message
-     * @param null   $senderName
-     * @param null   $emailSender
-     * @param null   $recipientTo
-     * @param null   $recipientToName
+     * This method allows to send a mail generically according to the parameters passed during the call
+     *
+     * @param string $subject         Subject of email
+     * @param string $message         Content of email
+     * @param null   $senderName      Name of sender
+     * @param null   $emailSender     Email of sender
+     * @param null   $recipientTo     Email of recipient
+     * @param null   $recipientToName Name of recipient
      */
     public function sendEmail(
         $subject,
@@ -74,11 +92,18 @@ class MailerService
             );
 
         $this->mailer->send($mail);
+
+        $this->session->getFlashBag()->set(
+            'sendmail',
+            'Le mail a bien été envoyé'
+        );
     }
 
     /**
-     * @param string $emailSender
-     * @param string $sender
+     * This method send an automatic mail for each mail send from contact form
+     *
+     * @param string $emailSender Email of sender
+     * @param string $sender      Name of sender
      */
     public function automaticReplyContactForm($emailSender, $sender)
     {

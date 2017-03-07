@@ -8,10 +8,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class OrderTest
+ *
+ * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class OrderTest extends AbstractEntityTest
 {
     /**
+     * Return an array of property to assert all method
+     *
      * @return array
      */
     public function entityPropertyProvider()
@@ -24,6 +28,7 @@ class OrderTest extends AbstractEntityTest
             ['typeTicket', 'string', 'Demi-journée'],
             ['email', 'string', 'john@doe.com'],
             ['orderNumber', 'string', 'ABCDE123456!'],
+            ['numberTickets', 'string', '4'],
             ['totalPrice', 'string', '250.00'],
             ['tickets', 'collection', new ArrayCollection([$mockTicket])],
         ];

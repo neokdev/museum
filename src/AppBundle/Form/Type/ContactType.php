@@ -16,12 +16,15 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class ContactType
+ *
+ * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class ContactType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
+     * Build contact form
+     *
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -47,13 +50,5 @@ class ContactType extends AbstractType
                 'label' => 'Message',
                 'required' => true,
             ]);
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'app_bundle_contact';
     }
 }

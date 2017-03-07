@@ -9,20 +9,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ContactService
+ *
+ * This service has been used to send a mail from contact form
+ *
+ * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class ContactService
 {
-    /** @var FormFactory */
+    /** @var FormFactory Service to build form */
     private $formFactory;
 
-    /** @var MailerService */
+    /** @var MailerService Service to send generic mail */
     private $mailerService;
 
     /**
      * ContactService constructor.
      *
-     * @param FormFactory   $formFactory
-     * @param MailerService $mailerService
+     * @param FormFactory   $formFactory   Service build form
+     * @param MailerService $mailerService Service send mail
      */
     public function __construct(FormFactory $formFactory, MailerService $mailerService)
     {
@@ -31,43 +35,36 @@ class ContactService
     }
 
     /**
-     * @param Request $request
+     * This method allows to send an email from the contact form.
      *
-     * @throws \LogicException
+     * @param Request $request Current request
      *
-     * @return FormView
+     * @return FormView Return a view corresponding to the form
      */
     public function sendEmailFromContactForm(Request $request)
     {
         $form = $this->formFactory->create(ContactType::class);
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
 
-            try {
-                if (!$datas) {
-                    throw new \LogicException(
-                        sprintf(
-                            'No datas found'
-                        )
-                    );
-                }
-                $this->mailerService->sendEmail(
-                    $datas['subject'],
-                    $datas['message'],
-                    $datas['name'],
-                    $datas['email']
-                );
+//            try {
+            $this->mailerService->sendEmail(
+                $datas['subject'],
+                $datas['message'],
+                $datas['name'],
+                $datas['email']
+            );
 
-                $this->mailerService->automaticReplyContactForm(
-                    $datas['email'],
-                    $datas['name']
-                );
+            $this->mailerService->automaticReplyContactForm(
+                $datas['email'],
+                $datas['name']
+            );
 
-            } catch (\LogicException $exception) {
-                $exception->getMessage();
-            }
+//            } catch (\Exception $exception) {
+//                $exception->getMessage();
+//            }
         }
 
         return $form->createView();

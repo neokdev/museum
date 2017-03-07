@@ -7,10 +7,14 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class MailerServiceTest
+ *
+ * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class MailerServiceTest extends WebTestCase
 {
-    /** {@inheritdoc} */
+    /**
+     * Setup unit test
+     */
     public function setUp()
     {
         static::bootKernel();

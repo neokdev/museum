@@ -1,8 +1,11 @@
 <?php
+
 namespace Tests\AppBundle\Entity;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+
 /**
  * Class AbstractEntityTest.
  */
@@ -12,18 +15,28 @@ abstract class AbstractEntityTest extends \PHPUnit_Framework_TestCase
      * @var \Closure
      */
     protected $setEntityIdValue;
+
     /**
      * @var 'Object entity'
      */
     protected $entityObject;
+
     /**
      * @var PropertyAccessor
      */
     protected static $accessor;
+
+    /**
+     * Setup before class
+     */
     public static function setUpBeforeClass()
     {
         self::$accessor = PropertyAccess::createPropertyAccessor();
     }
+
+    /**
+     * Setup test
+     */
     protected function setUp()
     {
         $this->entityObject = $this->getEntityInstance();
@@ -41,6 +54,7 @@ abstract class AbstractEntityTest extends \PHPUnit_Framework_TestCase
             );
         }
     }
+
     /**
      * @param string        $propertyName
      * @param string        $propertyType
@@ -82,10 +96,12 @@ abstract class AbstractEntityTest extends \PHPUnit_Framework_TestCase
             }
         }
     }
+
     /**
      * @return array
      */
     abstract public function entityPropertyProvider();
+
     /**
      * Get instance of entity to test.
      *

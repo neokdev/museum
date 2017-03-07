@@ -7,11 +7,15 @@ use AppBundle\Entity\Order;
 
 /**
  * Class TicketTest
+ *
+ * @author Aurélien Morvan <contact@aurelien-morvan.fr
  */
 class TicketTest extends AbstractEntityTest
 {
 
     /**
+     * Return an array of property to assert all method
+     *
      * @return array
      */
     public function entityPropertyProvider()
