@@ -1,0 +1,10 @@
+stages:
+    - test
+    - dev
+    - deploy
+
+test:
+    stage: test
+    image: guikingone/test_env
+    before_script: composer install
+    script: phpunit -v
