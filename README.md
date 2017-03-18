@@ -57,4 +57,4 @@ Le mail doit indiquer:
 
 # Présentation technique du projet
 ## Modèles de données
-![Modèle de données](/docs/museum.png)
+![Modèle de données](/docs/museum_model.png)
