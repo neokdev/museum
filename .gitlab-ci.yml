@@ -13,6 +13,6 @@ test:
        - php bin/console d:d:c
        - php bin/console d:s:u --force
        - php bin/console d:f:l -y
-   script:
+    script:
        - echo "Functionnal & Unit tests"
        - phpunit -v
