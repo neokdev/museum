@@ -42,10 +42,6 @@ class ContactType extends AbstractType
                             'max' => 38,
                             'maxMessage' => 'Le champ nom fait plus de 38 caractères',
                         ]),
-                        new Regex([
-                            'pattern' => '/^[a-zA-Z]+$/',
-                            'message' => 'Le champ nom peut contenir uniquement des caractères alphabétiques',
-                        ]),
                     ],
                 ]
 
@@ -63,10 +59,6 @@ class ContactType extends AbstractType
                         new Length([
                             'max' => 100,
                             'maxMessage' => 'Le champ email fait plus de 100 caractères',
-                        ]),
-                        new Regex([
-                            'pattern' => '/^[a-zA-Z0-9]+$/',
-                            'message' => 'Le champ email peut contenir uniquement des caractères alphanumériques',
                         ]),
                     ],
                 ]
