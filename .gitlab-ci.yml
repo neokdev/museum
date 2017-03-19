@@ -1,0 +1,17 @@
+stages:
+    - test
+    - dev
+    - deploy
+
+test:
+    stage: test
+    image: amorvan/env_test
+    before_script:
+       - php -v
+       - composer install
+       - composer dump-autoload -o
+       - php bin/console --env=test d:d:c
+       - php bin/console --env=test d:s:u --force
+    script:
+       - echo "Functionnal & Unit tests"
+       - vendor/bin/phpunit -v
