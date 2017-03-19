@@ -6,6 +6,8 @@ stages:
 test:
     stage: test
     image: amorvan/env_test
+    only:
+       - _dev
     before_script:
        - php -v
        - composer install
