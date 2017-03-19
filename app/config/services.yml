@@ -13,7 +13,6 @@ services:
             - '%recipient_adress%'
             - '%recipient_name%'
             - '@templating'
-            - '@session'
 
 # Service Contact
     app.contact_service:
@@ -21,3 +20,4 @@ services:
         arguments:
             - '@form.factory'
             - '@app.mailer_service'
+            - '@session'
