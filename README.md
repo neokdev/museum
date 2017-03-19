@@ -1,5 +1,5 @@
-# Sensio Insight
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/f6ab889d-2297-4989-9109-1caafd32fe9e/small.png)](https://insight.sensiolabs.com/projects/f6ab889d-2297-4989-9109-1caafd32fe9e)
+# Build CI
+[![build status](https://gitlab.com/morvan.aurelien/museum/badges/_dev/build.svg)](https://gitlab.com/morvan.aurelien/museum/commits/_dev)
 
 # Enoncé
 
