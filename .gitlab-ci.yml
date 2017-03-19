@@ -12,7 +12,6 @@ test:
        - composer dump-autoload -o
        - php bin/console --env=test d:d:c
        - php bin/console --env=test d:s:u --force
-       - php bin/console --env=test d:f:l -n
     script:
        - echo "Functionnal & Unit tests"
        - phpunit -v
