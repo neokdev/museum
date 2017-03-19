@@ -3,11 +3,9 @@
 namespace AppBundle\Services;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
- * Class MailerService
+ * Class MailerService.
  *
  * This service has been used to send generic email
  *
@@ -18,17 +16,14 @@ class MailerService
     /** @var \Swift_Mailer Swift mailer service */
     private $mailer;
 
-    /** @var  string Email of museum define in parameters file */
+    /** @var string Email of museum define in parameters file */
     private $emailMuseum;
 
-    /** @var  string Name email of museum define in parameters file */
+    /** @var string Name email of museum define in parameters file */
     private $nameEmailMuseum;
 
     /** @var TwigEngine Twig engine service */
     private $templating;
-
-    /** @var  Session Session service */
-    private $session;
 
     /**
      * MailerService constructor.
@@ -37,24 +32,21 @@ class MailerService
      * @param string        $emailMuseum     Email of museum
      * @param string        $nameEmailMuseum Name for email of museum
      * @param TwigEngine    $templating      Service twig engine
-     * @param Session       $session         Service Session
      */
     public function __construct(
         \Swift_Mailer $mailer,
         $emailMuseum,
         $nameEmailMuseum,
-        TwigEngine $templating,
-        Session $session
+        TwigEngine $templating
     ) {
         $this->mailer = $mailer;
         $this->emailMuseum = $emailMuseum;
         $this->nameEmailMuseum = $nameEmailMuseum;
         $this->templating = $templating;
-        $this->session = $session;
     }
 
     /**
-     * This method allows to send a mail generically according to the parameters passed during the call
+     * This method allows to send a mail generically according to the parameters passed during the call.
      *
      * @param string $subject         Subject of email
      * @param string $message         Content of email
@@ -92,18 +84,13 @@ class MailerService
             );
 
         $this->mailer->send($mail);
-
-        $this->session->getFlashBag()->set(
-            'sendmail',
-            'Le mail a bien été envoyé'
-        );
     }
 
     /**
-     * This method send an automatic mail for each mail send from contact form
+     * This method send an automatic mail for each mail send from contact form.
      *
      * @param string $emailSender Email of sender
-     * @param string $sender      Name of sender
+     * @param string $sender      Name of sende r
      */
     public function automaticReplyContactForm($emailSender, $sender)
     {
