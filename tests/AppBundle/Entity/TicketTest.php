@@ -28,6 +28,7 @@ class TicketTest extends AbstractEntityTest
             ['lastname', 'string', 'Doe'],
             ['birthDate', 'datetime', new \DateTime()],
             ['price', 'string', '10 euros'],
+            ['nationality', 'string', 'France'],
             ['order', 'object', $mockOrder],
         ];
     }

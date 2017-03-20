@@ -62,6 +62,13 @@ class Ticket
     private $price;
 
     /**
+     * @var string Nationality of ticket owner
+     *
+     * @ORM\Column(name="nationality", type="string", length=45)
+     */
+    private $nationality;
+
+    /**
      * @var Order Id of the order attached to the ticket
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Order", inversedBy="tickets")
@@ -171,6 +178,26 @@ class Ticket
     public function setPrice($price)
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNationality()
+    {
+        return $this->nationality;
+    }
+
+    /**
+     * @param string $nationality
+     *
+     * @return Ticket
+     */
+    public function setNationality(string $nationality)
+    {
+        $this->nationality = $nationality;
 
         return $this;
     }

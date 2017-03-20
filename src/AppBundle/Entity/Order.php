@@ -28,20 +28,12 @@ class Order
     /**
      * @var \DateTime Date of the visit
      *
-     * @Assert\Date(
-     *     message="Vous devez choisir une date"
-     * )
-     *
      * @ORM\Column(name="date_visit", type="datetime")
      */
     private $dateVisit;
 
     /**
      * @var string Type of ticket, day or half-day
-     *
-     * @Assert\NotBlank(
-     *     message="Vous devez choisir un type de ticket"
-     * )
      *
      * @ORM\Column(name="type_ticket", type="string")
      */
@@ -50,34 +42,19 @@ class Order
     /**
      * @var string Email of register
      *
-     * @Assert\NotBlank(
-     *     message="Veuillez saisir une adresse mail"
-     * )
-     * @Assert\Email(
-     *     message="L'adresse mail contient des caractères non autorisés"
-     * )
-     * @Assert\Length(
-     *     max="100",
-     *     maxMessage="L'adresse mail saisie ne peut pas faire plus de 100 caractères"
-     * )
-     *
      * @ORM\Column(name="email", type="string", length=100)
      */
     private $email;
 
     /**
-     * @var string
+     * @var string Unique number of each order
      *
      * @ORM\Column(name="order_number", type="string", length=30)
      */
     private $orderNumber;
 
     /**
-     * @var string Unique number of each order
-     *
-     * @Assert\NotBlank(
-     *     message="Vous devez choisir le nombre de ticket souhaités"
-     * )
+     * @var string Number of tickets into each order
      *
      * @ORM\Column(name="number_tickets", type="string")
      */
@@ -89,6 +66,20 @@ class Order
      * @ORM\Column(name="total_price", type="string")
      */
     private $totalPrice;
+
+    /**
+     * @var bool Indicate if order is valid
+     *
+     * @ORM\Column(name="valid", type="boolean")
+     */
+    private $valid;
+
+    /**
+     * @var bool Indicate if order is for half-day or day
+     *
+     * @ORM\Column(name="reduction", type="boolean")
+     */
+    private $reduction;
 
     /**
      * @var Ticket[] Contains one or many tickets
@@ -255,6 +246,46 @@ class Order
     public function setTotalPrice($totalPrice)
     {
         $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->valid;
+    }
+
+    /**
+     * @param bool $valid
+     *
+     * @return Order
+     */
+    public function setValid(bool $valid)
+    {
+        $this->valid = $valid;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReduction()
+    {
+        return $this->reduction;
+    }
+
+    /**
+     * @param bool $reduction
+     *
+     * @return Order
+     */
+    public function setReduction(bool $reduction)
+    {
+        $this->reduction = $reduction;
 
         return $this;
     }
