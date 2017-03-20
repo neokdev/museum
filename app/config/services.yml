@@ -21,3 +21,12 @@ services:
             - '@form.factory'
             - '@app.mailer_service'
             - '@session'
+
+# Manager
+    app.order_manager:
+        class: AppBundle\Services\OrderManager
+        arguments:
+            - '@form.factory'
+            - '@doctrine.orm.entity_manager'
+            - '@session'
+            - '@app.mailer_service'
