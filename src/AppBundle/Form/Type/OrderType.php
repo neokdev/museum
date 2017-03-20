@@ -7,6 +7,7 @@ use AppBundle\Form\Type\TicketType;
 use AppBundle\Validator\ClosedHoliday;
 use AppBundle\Validator\DateExceeded;
 use AppBundle\Validator\DayClosed;
+use AppBundle\Validator\HalfDay;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
