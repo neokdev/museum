@@ -30,6 +30,7 @@ class TicketTest extends AbstractEntityTest
             ['price', 'string', '10 euros'],
             ['nationality', 'string', 'France'],
             ['order', 'object', $mockOrder],
+            ['reduction', 'boolean', true],
         ];
     }
 

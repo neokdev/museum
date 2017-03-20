@@ -77,6 +77,11 @@ class Ticket
     private $order;
 
     /**
+     * @var bool
+     */
+    private $reduction;
+
+    /**
      * Return ticket id
      *
      * @return int
@@ -222,6 +227,26 @@ class Ticket
     public function setOrder(Order $order)
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReduction()
+    {
+        return $this->reduction;
+    }
+
+    /**
+     * @param bool $reduction
+     *
+     * @return Ticket
+     */
+    public function setReduction($reduction)
+    {
+        $this->reduction = $reduction;
 
         return $this;
     }
