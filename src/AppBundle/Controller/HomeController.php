@@ -33,7 +33,7 @@ class HomeController extends Controller
     /**
      * @param Request $request
      *
-     * @Route("/order", name="order_page")
+     * @Route("/order", name="order")
      *
      * @return Response
      */

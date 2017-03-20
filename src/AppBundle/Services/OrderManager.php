@@ -78,7 +78,7 @@ class OrderManager
                     'Il n\'y a pas suffisamment de billet disponible pour le jour demandé'
                 );
 
-                $response = new RedirectResponse('/');
+                $response = new RedirectResponse('homepage');
                 $response->send();
             }
 
@@ -92,7 +92,7 @@ class OrderManager
                 'La commande a commencé...'
             );
 
-            $response = new RedirectResponse('/ticket');
+            $response = new RedirectResponse('ticket');
             $response->send();
         }
 
