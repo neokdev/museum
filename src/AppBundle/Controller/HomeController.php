@@ -29,4 +29,20 @@ class HomeController extends Controller
             'form' => $form,
         ]);
     }
+
+    /**
+     * @param Request $request
+     *
+     * @Route("/order", name="order_page")
+     *
+     * @return Response
+     */
+    public function orderAction(Request $request)
+    {
+        $formSearchOrder = $this->get('app.order_manager')->searchOrder($request);
+
+        return $this->render('default/order_page.html.twig', [
+            'formSearchOrder' => $formSearchOrder,
+        ]);
+    }
 }
