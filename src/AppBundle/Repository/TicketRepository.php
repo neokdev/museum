@@ -11,5 +11,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class TicketRepository extends EntityRepository
 {
-
+    /**
+     * Return list of tickets by day
+     *
+     * @return array
+     */
+    public function getTicketsByDay()
+    {
+        return $this->createQueryBuilder('t')
+            ->innerJoin('t.order', 'order')
+            ->addSelect('order')
+            ->where('order.dateVisit = :date')
+            ->setParameter('date', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
 }
