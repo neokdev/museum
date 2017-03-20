@@ -3,10 +3,13 @@
 namespace AppBundle\Services;
 
 use AppBundle\Entity\Order;
+use AppBundle\Entity\Ticket;
+use AppBundle\Form\Type\OrderType;
 use AppBundle\Form\Type\SearchOrderType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -47,6 +50,53 @@ class OrderManager
         $this->em = $em;
         $this->session = $session;
         $this->mailerService = $mailerService;
+    }
+
+    /**
+     * Start booking of order
+     *
+     * @param Request $request
+     *
+     * @return FormView
+     */
+    public function startOrder(Request $request)
+    {
+        $order = new Order();
+        $order->setDateOrder(new \DateTime());
+
+        $form = $this->formFactory->create(OrderType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $datas = $form->getData();
+            $numberTickets = $datas['numberTickets'];
+            $remainingTickets = 1000 - $this->getTicketsRegistered();
+
+            if ($numberTickets > $remainingTickets) {
+                $this->session->getFlashBag()->add(
+                    'NoEnoughTicket',
+                    'Il n\'y a pas suffisamment de billet disponible pour le jour demandé'
+                );
+
+                $response = new RedirectResponse('/');
+                $response->send();
+            }
+
+            while ($numberTickets > 0) {
+                $order->addTicket(new Ticket());
+            }
+
+            $this->session->set('order', $order);
+            $this->session->getFlashBag()->add(
+                'success',
+                'La commande a commencé...'
+            );
+
+            $response = new RedirectResponse('/ticket');
+            $response->send();
+        }
+
+        return $form->createView();
     }
 
     /**
@@ -95,5 +145,15 @@ class OrderManager
         }
 
         return $form->createView();
+    }
+
+    /**
+     * Return number of ticket is register for selected day
+     *
+     * @return int
+     */
+    public function getTicketsRegistered()
+    {
+        return count($this->em->getRepository(Ticket::class)->getTicketsByDay());
     }
 }
