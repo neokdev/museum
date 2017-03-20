@@ -82,6 +82,13 @@ class Order
     private $reduction;
 
     /**
+     * @var \DateTime Indicade date of order
+     *
+     * @ORM\Column(name="date_order", type="datetime")
+     */
+    private $dateOrder;
+
+    /**
      * @var Ticket[] Contains one or many tickets
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Ticket", cascade={"all"}, mappedBy="order")
@@ -289,6 +296,27 @@ class Order
 
         return $this;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateOrder()
+    {
+        return $this->dateOrder;
+    }
+
+    /**
+     * @param \DateTime $dateOrder
+     *
+     * @return Order
+     */
+    public function setDateOrder(\DateTime $dateOrder)
+    {
+        $this->dateOrder = $dateOrder;
+
+        return $this;
+    }
+
 
     /**
      * Return all tickets from order
