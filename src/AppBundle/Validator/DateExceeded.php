@@ -7,9 +7,9 @@ use Symfony\Component\Validator\Constraint;
 /**
  * Class DateExceeded
  *
- * @author Aurélien Morvan <contact@aurelien-morvan.fr>
- *
  * @Annotation
+ *
+ * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class DateExceeded extends Constraint
 {

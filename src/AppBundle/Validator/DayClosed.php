@@ -7,6 +7,8 @@ use Symfony\Component\Validator\Constraint;
 /**
  * Class DayClosed
  *
+ * @Annotation
+ *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class DayClosed extends Constraint

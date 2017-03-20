@@ -7,6 +7,8 @@ use Symfony\Component\Validator\Constraint;
 /**
  * Class HalfDay
  *
+ * @Annotation
+ *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class HalfDay extends Constraint
