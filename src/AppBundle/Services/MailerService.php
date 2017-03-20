@@ -50,6 +50,7 @@ class MailerService
      *
      * @param string $subject         Subject of email
      * @param string $message         Content of email
+     * @param string $templateMail    Name of template mail
      * @param null   $senderName      Name of sender
      * @param null   $emailSender     Email of sender
      * @param null   $recipientTo     Email of recipient
@@ -58,6 +59,7 @@ class MailerService
     public function sendEmail(
         $subject,
         $message,
+        $templateMail,
         $senderName = null,
         $emailSender = null,
         $recipientTo = null,
@@ -75,7 +77,7 @@ class MailerService
             ->setTo($recipientAdress, $recipientName)
             ->setBody(
                 $this->templating->render(
-                    'email/contact_form.html.twig',
+                    $templateMail,
                     [
                         'message' => $message,
                     ]
@@ -89,10 +91,12 @@ class MailerService
     /**
      * This method send an automatic mail for each mail send from contact form.
      *
-     * @param string $emailSender Email of sender
-     * @param string $sender      Name of sende r
+     * @param string $emailSender  Email of sender
+     * @param string $sender       Name of sender
+     * @param string $subject      Subject of the application
+     * @param string $templateMail Template for this automatic reply
      */
-    public function automaticReplyContactForm($emailSender, $sender)
+    public function automaticReplyContactForm($emailSender, $sender, $subject, $templateMail)
     {
         $mail = \Swift_Message::newInstance()
             ->setSubject('Confirmation de réception')
@@ -100,9 +104,10 @@ class MailerService
             ->setTo($emailSender)
             ->setBody(
                 $this->templating->render(
-                    'email/confirm_receive_message_contact.html.twig',
+                    $templateMail,
                     [
                         'sender' => $sender,
+                        'subject' => $subject,
                     ]
                 ),
                 'text/html'

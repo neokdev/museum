@@ -58,13 +58,16 @@ class ContactService
             $this->mailerService->sendEmail(
                 $datas['subject'],
                 $datas['message'],
+                'email/contact_form.html.twig',
                 $datas['name'],
                 $datas['email']
             );
 
             $this->mailerService->automaticReplyContactForm(
                 $datas['email'],
-                $datas['name']
+                $datas['name'],
+                $datas['subject'],
+                'email/confirm_receive_message_contact.html.twig'
             );
 
             $this->session->getFlashBag()->set(
