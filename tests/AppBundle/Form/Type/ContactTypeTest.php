@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
-class ContactTypeTest extends TypeTestCase
+class ContactTypeTest extends AbstractTypeTest
 {
     /**
      * Test contact form
@@ -36,24 +36,5 @@ class ContactTypeTest extends TypeTestCase
         $form->submit($formData);
 
         static::assertTrue($form->isSynchronized());
-    }
-
-    /**
-     * Setup unit test
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $validator = $this->getMock(ValidatorInterface::class);
-        $validator->method('validate')->will(($this->returnValue(new ConstraintViolationList())));
-        $formTypeExtension = new FormTypeValidatorExtension($validator);
-        $coreExtension = new CoreExtension();
-
-        $this->factory = Forms::createFormFactoryBuilder()
-            ->addExtensions($this->getExtensions())
-            ->addExtension($coreExtension)
-            ->addTypeExtension($formTypeExtension)
-            ->getFormFactory();
     }
 }
