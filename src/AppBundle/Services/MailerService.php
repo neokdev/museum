@@ -2,6 +2,7 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\Order;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
@@ -116,6 +117,30 @@ class MailerService
                     ]
                 ),
                 'text/html'
+            );
+
+        $this->mailer->send($mail);
+    }
+
+    /**
+     * @param string $subject        Subject of mail
+     * @param string $emailRecipient Email recipient of mail
+     * @param string $templateMail   Template has been load
+     * @param Order  $order          Order
+     */
+    public function sendTickets($subject, $emailRecipient, $templateMail, Order $order)
+    {
+        $mail = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($this->emailMuseum, $this->nameEmailMuseum)
+            ->setTo($emailRecipient)
+            ->setBody(
+                $this->templating->render(
+                    $templateMail,
+                    [
+                        $order,
+                    ]
+                )
             );
 
         $this->mailer->send($mail);
