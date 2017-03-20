@@ -79,7 +79,12 @@ class MailerService
                 $this->templating->render(
                     $templateMail,
                     [
+                        'subject' => $subject,
+                        'senderName' => $senderName,
+                        'senderAddress' => $senderAdress,
                         'message' => $message,
+                        'date' => new \DateTime(),
+
                     ]
                 ),
                 'text/html'
