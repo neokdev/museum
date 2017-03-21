@@ -84,7 +84,7 @@ class Order
     /**
      * @var \DateTime Indicade date of order
      *
-     * @ORM\Column(name="date_order", type="datetime")
+     * @ORM\Column(name="date_order", type="date")
      */
     private $dateOrder;
 
