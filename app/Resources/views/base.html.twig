@@ -5,6 +5,7 @@
         <title>Musée du louvres - {% block title %}{% endblock %}</title>
         {% block stylesheets %}
         <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet"/>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -12,7 +13,11 @@
     <body>
         <div class="container">
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+            <script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
+        {% endblock %}
         </div>
 
     </body>
