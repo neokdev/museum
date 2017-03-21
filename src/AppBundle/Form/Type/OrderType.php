@@ -11,8 +11,10 @@ use AppBundle\Validator\HalfDay;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
@@ -56,10 +58,12 @@ class OrderType extends AbstractType
             )
             ->add(
                 'dateVisit',
-                DateType::class,
+                DateTimeType::class,
                 [
                     'label' => 'Date de la visite',
                     'required' => true,
+                    'format' => 'dd/MM/yyyy',
+                    'widget' => 'single_text',
                     'constraints' => [
                         new NotBlank(
                             [
@@ -90,17 +94,19 @@ class OrderType extends AbstractType
                 [
                     'label' => 'Type de billet:',
                     'required' => true,
+                    'choices' => [
+                        'Journée' => 0,
+                        'Demi-journée' => 1,
+                    ],
                     'constraints' => [
                         new NotBlank(
                             [
                                 'message' => 'Vous devez choisir le type de billet que vous souhaitez, demi-journée ou journée',
                             ]
                         ),
-                        new HalfDay(
-                            [
-                                'message' => 'Vous ne pouvez plus réserver votre billet pour la journée complète car il est 14h00 passée',
-                            ]
-                        ),
+                        new HalfDay([
+                            'message' => 'Vous ne pouvez plus réserver votre billet pour la journée complète car il est 14h00 passée',
+                        ]),
                     ],
                 ]
             )
@@ -110,6 +116,18 @@ class OrderType extends AbstractType
                 [
                     'label' => 'Nombre de ticket souhaités',
                     'required' => true,
+                    'choices' => [
+                        '1' => '1',
+                        '2' => '2',
+                        '3' => '3',
+                        '4' => '4',
+                        '5' => '5',
+                        '6' => '6',
+                        '7' => '7',
+                        '8' => '8',
+                        '9' => '9',
+                        '10' => '10',
+                    ],
                     'constraints' => [
                         new NotBlank(
                             [
@@ -124,6 +142,8 @@ class OrderType extends AbstractType
                 CollectionType::class,
                 [
                     'entry_type' => TicketType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
                 ]
             );
     }
