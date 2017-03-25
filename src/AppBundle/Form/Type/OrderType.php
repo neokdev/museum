@@ -70,11 +70,6 @@ class OrderType extends AbstractType
                                 'message' => 'Le champ date de la visite doit être renseigné',
                             ]
                         ),
-                        new DateExceeded(
-                            [
-                                'message' => 'La date que vous avez choisi est antérieur à la date actuelle',
-                            ]
-                        ),
                         new DayClosed(
                             [
                                 'message' => 'Le musée est fermé le mardi et le dimanche',
@@ -104,9 +99,6 @@ class OrderType extends AbstractType
                                 'message' => 'Vous devez choisir le type de billet que vous souhaitez, demi-journée ou journée',
                             ]
                         ),
-                        new HalfDay([
-                            'message' => 'Vous ne pouvez plus réserver votre billet pour la journée complète car il est 14h00 passée',
-                        ]),
                     ],
                 ]
             )
