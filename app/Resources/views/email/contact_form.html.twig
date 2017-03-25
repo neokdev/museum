@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-</head>
-<body>
+{% extends 'base_email.html.twig' %}
+{% block body %}
     <h1>Demande :</h1>
     <p>
         <u>Date :</u>{{ date|date('d-m-Y')}}<br/>
@@ -12,5 +8,4 @@
         <u>Sujet :</u>{{ subject }}<br/>
         <u>Message: </u>{{ message }}
     </p>
-</body>
-</html>
+{% endblock %}

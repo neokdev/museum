@@ -4,14 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Order
+ * Class Order.
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  *
- * @ORM\Table(name="order")
+ * @ORM\Table(name="order_registration")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderRepository")
  */
 class Order
@@ -28,7 +27,7 @@ class Order
     /**
      * @var \DateTime Date of the visit
      *
-     * @ORM\Column(name="date_visit", type="datetime")
+     * @ORM\Column(name="date_visit", type="date")
      */
     private $dateVisit;
 
@@ -47,7 +46,7 @@ class Order
     private $email;
 
     /**
-     * @var string Unique number of each order
+     * @var string Unique number of each booking
      *
      * @ORM\Column(name="order_number", type="string", length=30)
      */
@@ -61,7 +60,7 @@ class Order
     private $numberTickets;
 
     /**
-     * @var string Total price for each order
+     * @var string Total price for each booking
      *
      * @ORM\Column(name="total_price", type="string")
      */
@@ -77,7 +76,7 @@ class Order
     /**
      * @var bool Indicate if order is for half-day or day
      *
-     * @ORM\Column(name="reduction", type="boolean")
+     * @ORM\Column(name="reduction", type="boolean", nullable=true)
      */
     private $reduction;
 
@@ -104,7 +103,7 @@ class Order
     }
 
     /**
-     * Return order id
+     * Return order id.
      *
      * @return int
      */
@@ -114,7 +113,7 @@ class Order
     }
 
     /**
-     * Return date of visit
+     * Return date of visit.
      *
      * @return \DateTime
      */
@@ -124,7 +123,7 @@ class Order
     }
 
     /**
-     * Define date of visit
+     * Define date of visit.
      *
      * @param \DateTime $dateVisit Date of visit
      *
@@ -138,7 +137,7 @@ class Order
     }
 
     /**
-     * Return type of ticket for order
+     * Return type of ticket for order.
      *
      * @return string
      */
@@ -148,7 +147,7 @@ class Order
     }
 
     /**
-     * Define type of ticket for order
+     * Define type of ticket for order.
      *
      * @param string $typeTicket Type of ticket
      *
@@ -162,7 +161,7 @@ class Order
     }
 
     /**
-     * Return email register
+     * Return email register.
      *
      * @return string
      */
@@ -172,7 +171,7 @@ class Order
     }
 
     /**
-     * Define email register
+     * Define email register.
      *
      * @param string $email Email register for order
      *
@@ -186,7 +185,7 @@ class Order
     }
 
     /**
-     * Return unique number generate at the end of order
+     * Return unique number generate at the end of order.
      *
      * @return string
      */
@@ -196,7 +195,7 @@ class Order
     }
 
     /**
-     * Define unique number
+     * Define unique number.
      *
      * @param string $orderNumber Unique number generate
      *
@@ -210,7 +209,7 @@ class Order
     }
 
     /**
-     * Return number of ticket for order
+     * Return number of ticket for order.
      *
      * @return string
      */
@@ -220,7 +219,7 @@ class Order
     }
 
     /**
-     * Set number of ticket for order
+     * Set number of ticket for order.
      *
      * @param string $numberTickets Number of tickets for order
      *
@@ -234,7 +233,7 @@ class Order
     }
 
     /**
-     * Return total price for order
+     * Return total price for order.
      *
      * @return string
      */
@@ -244,7 +243,7 @@ class Order
     }
 
     /**
-     * Define total price for order
+     * Define total price for order.
      *
      * @param string $totalPrice Total price for order
      *
@@ -317,9 +316,8 @@ class Order
         return $this;
     }
 
-
     /**
-     * Return all tickets from order
+     * Return all tickets from order.
      *
      * @return Ticket[]
      */
@@ -329,7 +327,7 @@ class Order
     }
 
     /**
-     * Add a ticket to order
+     * Add a ticket to order.
      *
      * @param Ticket $ticket Ticket to add to order
      *
@@ -343,7 +341,7 @@ class Order
     }
 
     /**
-     * Remove a ticket from order
+     * Remove a ticket from order.
      *
      * @param Ticket $ticket Ticket to remove to order
      */

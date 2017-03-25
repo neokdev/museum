@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
+{% extends 'base_email.html.twig' %}
 
-    </head>
-    <body>
+{% block body %}
         <h1>Bonjour {{ sender }}</h1>
         <p>Nous avons bien reçu votre demande concernant {{ subject }}</p>
         <p>
             Cordialement,<br/>
             L'équipe du Musée du Louvre.
         </p>
-    </body>
-</html>
+{% endblock %}

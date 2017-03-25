@@ -12,6 +12,7 @@ parameters:
     # database_path: "%kernel.root_dir%/data.db3"
 
     mailer_transport:  ~
+    mailer_host: ~
     mailer_user:       ~
     mailer_password:   ~
 
