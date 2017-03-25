@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Nelmio\Alice\Fixtures;
@@ -25,7 +24,6 @@ class HomeControllerTest extends WebTestCase
     public function testIndexAction()
     {
         $client = $this->getClient();
-
         static::assertTrue($client->getResponse()->isSuccessful());
 
         $crawler = $client->request('GET', '/');
@@ -48,8 +46,9 @@ class HomeControllerTest extends WebTestCase
         $form['contact[message]'] = 'Question';
 
         $crawler = $client->submit($form);
+        $profile = $client->getProfile();
 
-        if ($profile = $client->getProfile()) {
+        if ($profile) {
             $swiftMailerProfiler = $profile->getCollector('swiftmailer');
 
             static::assertEquals(2, $swiftMailerProfiler->getMessageCount());
@@ -59,14 +58,44 @@ class HomeControllerTest extends WebTestCase
     }
 
     /**
-     * @return Client
+     * Functionnal test to check if access order page is ok
+     * Must display two forms
      */
-    private function getClient()
+    public function testAccessOrderPage()
     {
-        $client = static::createClient();
-        $client->request('GET', '/');
+        $client = $this->getClient();
+        static::assertTrue($client->getResponse()->isSuccessful());
 
-        return $client;
+        $crawler = $client->request('GET', 'order');
+        static::assertTrue($client->getResponse()->isSuccessful(), 'Response should be successful');
+        static::assertEquals(2, $crawler->filter('form')->count());
+    }
+
+    /**
+     * Funtionnal test to recovery order by mail
+     */
+    public function testRecoveryTicketsIfExist()
+    {
+        Fixtures::load($this->getFixtures(), $this->em);
+
+        $client = $this->getClient();
+        static::assertTrue($client->getResponse()->isSuccessful());
+
+        $crawler = $client->request('GET', 'order');
+        static::assertTrue($client->getResponse()->isSuccessful(), 'Response should be successful');
+        static::assertEquals(2, $crawler->filter('form')->count());
+
+        $form = $crawler->selectButton('submit_search')->form();
+        $form['search_order[email]'] = 'john@doe.com';
+
+        $client->submit($form);
+
+        $profiler = $client->getProfile();
+        if ($profiler) {
+            $swiftMailerProfiler = $profiler->getCollector('swiftmailer');
+
+            static::assertEquals(1, $swiftMailerProfiler->getMessageCount());
+        }
     }
 
     /**
@@ -93,5 +122,16 @@ class HomeControllerTest extends WebTestCase
         return [
             __DIR__.'/../Resources/Fixtures/fixtures.yml',
         ];
+    }
+
+    /**
+     * @return Client
+     */
+    private function getClient()
+    {
+        $client = static::createClient();
+        $client->request('GET', '/');
+
+        return $client;
     }
 }
