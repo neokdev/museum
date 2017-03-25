@@ -116,29 +116,32 @@ class OrderManager
 
             $order = $this->em->getRepository(Order::class)->findOneBy(
                 [
-                    'email' => $emailSearch['email'],
+                    'email' => $emailSearch->getEmail(),
                 ]
             );
 
             if (!$order) {
                 $this->session->getFlashBag()->add(
                     'error',
-                    'L\'adresse email indiqué ne correspond pas à une commande'
+                    'L\'adresse email indiquée ne correspond pas à une commande'
                 );
-                exit;
+                $response = new RedirectResponse('order');
+                $response->send();
             }
 
             $this->session->getFlashBag()->add(
                 'success',
                 sprintf(
                     'Votre commande a bien été trouvée, vous allez recevoir vos billets à l\'adresse %s',
-                    $emailSearch['email']
+                    $emailSearch->getEmail()
                 )
             );
 
+            //TODO Modale confirmation envoi mail à faire
+
             $this->mailerService->sendTickets(
                 'E-Billet - Musée du Louvre - N°'.$order->getOrderNumber(),
-                $emailSearch['email'],
+                $emailSearch->getEmail(),
                 'email/confirm_order.html.twig',
                 $order
             );
