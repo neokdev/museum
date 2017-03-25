@@ -70,8 +70,8 @@ class ContactService
                 'email/confirm_receive_message_contact.html.twig'
             );
 
-            $this->session->getFlashBag()->set(
-                'sendmail',
+            $this->session->getFlashBag()->add(
+                'success',
                 'Le mail a bien été envoyé'
             );
         }
