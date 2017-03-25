@@ -7,11 +7,12 @@
         {% for message in app.session.flashBag.get('sendmail')%}
             {{ message }}
         {% endfor %}
+            {{ app.session.flashBag.has('unauthorized') ? app.session.flashBag.get('unauthorized')[0] }}
     </div>
 
     <div class="row" xmlns="http://www.w3.org/1999/html">
         <div class="col-xs-12 text-center text-uppercase">
-            <a class="btn btn-default order-button" href="#" role="button">
+            <a class="btn btn-default order-button" href="{{ path('order') }}" role="button">
                 <strong>Réserver mes billets</strong>
             </a>
         </div>
