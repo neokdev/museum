@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="flash-message">
-        {% for message in app.session.flashBag.get('sendmail')%}
+        {% for message in app.session.flashBag.get('success')%}
             {{ message }}
         {% endfor %}
             {{ app.session.flashBag.has('unauthorized') ? app.session.flashBag.get('unauthorized')[0] }}

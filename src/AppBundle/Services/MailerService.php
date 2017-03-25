@@ -49,40 +49,30 @@ class MailerService
     /**
      * This method allows to send a mail generically according to the parameters passed during the call.
      *
-     * @param string $subject         Subject of email
-     * @param string $message         Content of email
-     * @param string $templateMail    Name of template mail
-     * @param null   $senderName      Name of sender
-     * @param null   $emailSender     Email of sender
-     * @param null   $recipientTo     Email of recipient
-     * @param null   $recipientToName Name of recipient
+     * @param string $subject      Subject of email
+     * @param string $message      Content of email
+     * @param string $templateMail Name of template mail
+     * @param null   $senderName   Name of sender
+     * @param null   $emailSender  Email of sender
      */
     public function sendEmail(
         $subject,
         $message,
         $templateMail,
         $senderName = null,
-        $emailSender = null,
-        $recipientTo = null,
-        $recipientToName = null
+        $emailSender = null
     ) {
-        $senderName = $senderName ? $senderName : $this->nameEmailMuseum;
-        $senderAdress = $emailSender ? $emailSender : $this->emailMuseum;
-
-        $recipientName = $recipientToName ? $recipientToName : $this->nameEmailMuseum;
-        $recipientAdress = $recipientTo ? $recipientTo : $this->emailMuseum;
-
         $mail = \Swift_Message::newInstance()
             ->setSubject($subject)
-            ->setFrom($senderAdress, $senderName)
-            ->setTo($recipientAdress, $recipientName)
+            ->setFrom($emailSender, $senderName)
+            ->setTo($this->emailMuseum, $this->nameEmailMuseum)
             ->setBody(
                 $this->templating->render(
                     $templateMail,
                     [
                         'subject' => $subject,
                         'senderName' => $senderName,
-                        'senderAddress' => $senderAdress,
+                        'senderAddress' => $emailSender,
                         'message' => $message,
                         'date' => new \DateTime(),
 
@@ -138,7 +128,7 @@ class MailerService
                 $this->templating->render(
                     $templateMail,
                     [
-                        $order,
+                        'order' => $order,
                     ]
                 )
             );

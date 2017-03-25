@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block title %}Commande{% endblock %}
+
+{% block body %}
+<div>
+    {{ form_start(formStartOrder) }}
+    {{ form_widget(formStartOrder.email) }}
+    {{ form_widget(formStartOrder.dateVisit) }}
+    {{ form_widget(formStartOrder.typeTicket) }}
+    {{ form_widget(formStartOrder.numberTickets) }}
+
+
+    <button type="submit" name="submit_order">Commander</button>
+    {{ form_widget(formStartOrder.tickets) }}
+    {{ form_end(formStartOrder) }}
+</div>
+
+{% if app.session.flashBag.has('error') %}
+<div>
+    {{ app.session.flashBag.get('error')[0] }}
+</div>
+{% endif %}
+<div>
+    {{ form_start(formSearchOrder) }}
+    {{ form_widget(formSearchOrder.email) }}
+    <button type="submit" name="submit_search">Envoyer mes billets</button>
+    {{ form_end(formSearchOrder) }}
+</div>
+
+{% endblock %}
