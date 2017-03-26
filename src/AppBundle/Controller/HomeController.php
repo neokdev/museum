@@ -65,4 +65,22 @@ class HomeController extends Controller
             'form' => $form,
         ]);
     }
+
+    /**
+     * @param Request $request
+     *
+     * @Route("/summary", name="summary")
+     *
+     * @return Response
+     */
+    public function summaryAction(Request $request)
+    {
+        $order = $this->get('app.order_manager')->summaryOrder($request);
+        $keypublic = $this->getParameter('stripe.pub_key');
+
+        return $this->render('default/summary_page.html.twig', [
+            'order' => $order,
+            'keypublic' => $keypublic,
+        ]);
+    }
 }
