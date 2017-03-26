@@ -7,6 +7,7 @@ use AppBundle\Entity\Ticket;
 use AppBundle\Form\Type\OrderType;
 use AppBundle\Form\Type\SearchOrderType;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -57,43 +58,50 @@ class OrderManager
      *
      * @param Request $request
      *
-     * @return FormView
+     * @return FormView|RedirectResponse
      */
     public function startOrder(Request $request)
     {
         $order = new Order();
         $order->setDateOrder(new \DateTime());
 
-        $form = $this->formFactory->create(OrderType::class);
+        $form = $this->formFactory->create(OrderType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
-            $numberTickets = $datas['numberTickets'];
-            $remainingTickets = 1000 - $this->getTicketsRegistered();
 
-            if ($numberTickets > $remainingTickets) {
+            $numberTickets = $datas->getNumberTickets();
+            try {
+                if (!$this->isEnoughtTicketsForSelectedDay($numberTickets, $datas->getDateVisit())) {
+                    throw new \Exception(
+                        sprintf(
+                            'Not enough ticket for the requested day: %s',
+                            $datas->getDateVisit()->format('d-m-Y')
+                        )
+                    );
+                }
+
+                while ($numberTickets > 0) {
+                    $order->addTicket(new Ticket());
+                    $numberTickets--;
+                }
+
+                $this->session->set('order', $order);
                 $this->session->getFlashBag()->add(
-                    'NoEnoughTicket',
-                    'Il n\'y a pas suffisamment de billet disponible pour le jour demandé'
+                    'success',
+                    'La commande a commencé...'
                 );
 
-                $response = new RedirectResponse('homepage');
-                $response->send();
+                $response = new RedirectResponse('/ticket');
+
+                return $response->send();
+            } catch (\Exception $exception) {
+                $this->session->getFlashBag()->add(
+                    'error',
+                    $exception->getMessage()
+                );
             }
-
-            while ($numberTickets > 0) {
-                $order->addTicket(new Ticket());
-            }
-
-            $this->session->set('order', $order);
-            $this->session->getFlashBag()->add(
-                'success',
-                'La commande a commencé...'
-            );
-
-            $response = new RedirectResponse('ticket');
-            $response->send();
         }
 
         return $form->createView();
@@ -120,43 +128,71 @@ class OrderManager
                 ]
             );
 
-            if (!$order) {
+            try {
+                if (!$order) {
+                    throw new EntityNotFoundException(
+                        sprintf(
+                            'L\'adresse email indiquée \'%s\' ne correspond pas à une commande',
+                            $emailSearch->getEmail()
+                        )
+                    );
+                }
+
+                $this->session->getFlashBag()->add(
+                    'success',
+                    sprintf(
+                        'Votre commande a bien été trouvée, vous allez recevoir vos billets à l\'adresse %s',
+                        $emailSearch->getEmail()
+                    )
+                );
+
+                //TODO Modale confirmation envoi mail à faire
+
+                $this->mailerService->sendTickets(
+                    'E-Billet - Musée du Louvre - N°'.$order->getOrderNumber(),
+                    $emailSearch->getEmail(),
+                    'email/confirm_order.html.twig',
+                    $order
+                );
+            } catch (EntityNotFoundException $exception) {
                 $this->session->getFlashBag()->add(
                     'error',
-                    'L\'adresse email indiquée ne correspond pas à une commande'
+                    $exception->getMessage()
                 );
-                $response = new RedirectResponse('order');
-                $response->send();
             }
-
-            $this->session->getFlashBag()->add(
-                'success',
-                sprintf(
-                    'Votre commande a bien été trouvée, vous allez recevoir vos billets à l\'adresse %s',
-                    $emailSearch->getEmail()
-                )
-            );
-
-            //TODO Modale confirmation envoi mail à faire
-
-            $this->mailerService->sendTickets(
-                'E-Billet - Musée du Louvre - N°'.$order->getOrderNumber(),
-                $emailSearch->getEmail(),
-                'email/confirm_order.html.twig',
-                $order
-            );
         }
 
         return $form->createView();
     }
 
     /**
+     * Checks if there are enough tickets available for the requested day
+     *
+     * @param int       $numberTickets Number of tickets selected
+     * @param \DateTime $date
+     *
+     * @return bool
+     */
+    private function isEnoughtTicketsForSelectedDay($numberTickets, \DateTime $date)
+    {
+        $remainingTickets = 1 - $this->getTicketsRegistered($date);
+
+        if ($numberTickets > $remainingTickets) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Return number of ticket is register for selected day
+     *
+     * @param \DateTime $date Date of selected day
      *
      * @return int
      */
-    public function getTicketsRegistered()
+    private function getTicketsRegistered(\DateTime $date)
     {
-        return count($this->em->getRepository(Ticket::class)->getTicketsByDay());
+        return count($this->em->getRepository(Ticket::class)->getTicketsByDay($date));
     }
 }

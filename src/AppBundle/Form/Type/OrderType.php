@@ -3,18 +3,13 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Order;
-use AppBundle\Form\Type\TicketType;
 use AppBundle\Validator\ClosedHoliday;
-use AppBundle\Validator\DateExceeded;
 use AppBundle\Validator\DayClosed;
-use AppBundle\Validator\HalfDay;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
@@ -58,12 +53,13 @@ class OrderType extends AbstractType
             )
             ->add(
                 'dateVisit',
-                DateTimeType::class,
+                DateType::class,
                 [
                     'label' => 'Date de la visite',
                     'required' => true,
-                    'format' => 'dd/MM/yyyy',
                     'widget' => 'single_text',
+                    'format' => 'dd-MM-yyyy',
+                    'html5' => false,
                     'constraints' => [
                         new NotBlank(
                             [
