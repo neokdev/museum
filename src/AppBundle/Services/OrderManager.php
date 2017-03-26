@@ -86,14 +86,22 @@ class OrderManager
 
         if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
-
             $numberTickets = $datas->getNumberTickets();
+
             try {
                 if (!$this->isEnoughtTicketsForSelectedDay($numberTickets, $datas->getDateVisit())) {
                     throw new \Exception(
                         sprintf(
                             'Il n\'y a pas assez de billets disponible pour le jour demandé: %s',
                             $datas->getDateVisit()->format('d-m-Y')
+                        )
+                    );
+                }
+
+                if (!$this->isHalfDayPossible($datas->getDateVisit())) {
+                    throw new \Exception(
+                        sprintf(
+                            'Vous ne pouvez plus réserver votre billet pour la journée complète car il est 14h00 passé'
                         )
                     );
                 }
@@ -256,6 +264,8 @@ class OrderManager
     }
 
     /**
+     * Return order to confirm page and send email to user with tickets
+     *
      * @throws EntityNotFoundException
      *
      * @return Order
@@ -365,6 +375,28 @@ class OrderManager
 
         if ($numberTickets > $remainingTickets) {
             return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if half day booking is possible
+     *
+     * @param \DateTime $date
+     *
+     * @return bool
+     */
+    private function isHalfDayPossible(\DateTime $date)
+    {
+        $actualDate = new \DateTime();
+        if ($date->format('d-m-Y') != $actualDate->format('d-m-Y')) {
+            return true;
+        }
+        if ($date->format('d-m-Y') == $actualDate->format('d-m-Y')) {
+            if ($actualDate->format('h') > 14) {
+                return false;
+            }
         }
 
         return true;
