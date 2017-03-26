@@ -7,7 +7,7 @@
         {% for message in app.session.flashBag.get('success')%}
             {{ message }}
         {% endfor %}
-            {{ app.session.flashBag.has('unauthorized') ? app.session.flashBag.get('unauthorized')[0] }}
+            {{ app.session.flashBag.has('error') ? app.session.flashBag.get('error')[0] }}
     </div>
 
     <div class="row" xmlns="http://www.w3.org/1999/html">
