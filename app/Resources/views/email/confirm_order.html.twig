@@ -17,6 +17,9 @@
         {% for ticket in order.tickets %}
             Prénom visiteur : {{ ticket.firstname }} <br/>
             Nom visiteur : {{ ticket.lastname }}<br/>
+            {% if ticket.price == 10 %}
+            N'oubliez pas d'apporter le justificatif pour votre tarif réduit.
+            {% endif %}
             En vous souhaitant une très bonne visite,<br/>
             L’équipe du Musée du Louvre<br/>
         {% endfor %}

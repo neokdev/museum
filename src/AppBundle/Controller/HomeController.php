@@ -83,4 +83,18 @@ class HomeController extends Controller
             'keypublic' => $keypublic,
         ]);
     }
+
+    /**
+     * @Route("/confirm", name="confirm")
+     *
+     * @return Response
+     */
+    public function confirmAction()
+    {
+        $order = $this->get('app.order_manager')->confirmOrder();
+
+        return $this->render('default/confirm_page.html.twig', [
+            'order' => $order,
+        ]);
+    }
 }

@@ -256,9 +256,47 @@ class OrderManager
     }
 
     /**
+     * @throws EntityNotFoundException
+     *
+     * @return Order
+     */
+    public function confirmOrder()
+    {
+        $order = $this->session->get('order');
+
+        try {
+            if (!is_object($order) || !$order) {
+                throw new EntityNotFoundException(
+                    sprintf(
+                        'Vous ne pouvez accéder à cette page s\'il n\'y a pas de commande en cours'
+                    )
+                );
+            }
+        } catch (EntityNotFoundException $exception) {
+            $this->session->getFlashBag()->add(
+                'error',
+                $exception->getMessage()
+            );
+
+            RedirectResponse::create('/')->send();
+        }
+
+        $this->mailerService->sendTickets(
+            'E-billet - Musée du Louvre - N°'.$order->getOrderNumber(),
+            $order->getEmail(),
+            'email/confirm_order.html.twig',
+            $order
+        );
+
+        return $order;
+    }
+
+    /**
      * Return a form to search an specific order by email.
      *
      * @param Request $request
+     *
+     * @throws EntityNotFoundException
      *
      * @return FormView
      */
