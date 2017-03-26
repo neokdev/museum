@@ -126,7 +126,7 @@ class OrderManager
             if (!is_object($order) || !$order) {
                 throw new EntityNotFoundException(
                     sprintf(
-                        'Vous ne pouvez accéder à cette page si la commande n\'a pas démarré'
+                        'Vous ne pouvez accéder à cette page s\'il n\'y a pas de commande en cours'
                     )
                 );
             }
@@ -170,6 +170,7 @@ class OrderManager
                     'error',
                     $exception->getMessage()
                 );
+                RedirectResponse::create('/')->send();
             }
         }
 
