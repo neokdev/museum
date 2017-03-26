@@ -55,6 +55,9 @@ class TicketType extends AbstractType
             ->add('birthDate', BirthdayType::class, [
                 'label' => 'Votre date de naissance :',
                 'required' => true,
+                'widget' => 'single_text',
+                'format' => 'dd-MM-yyyy',
+                'invalid_message' => 'Format demandé: 18-02-1985',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Le champ date de naissance doit être renseigné',
