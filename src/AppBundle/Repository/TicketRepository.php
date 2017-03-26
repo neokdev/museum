@@ -5,14 +5,14 @@ namespace AppBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Class TicketRepository
+ * Class TicketRepository.
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class TicketRepository extends EntityRepository
 {
     /**
-     * Return list of tickets by day
+     * Return list of tickets by day.
      *
      * @param \DateTime $date Date of selected day
      *

@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class TicketType
+ * Class TicketType.
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
@@ -72,6 +72,7 @@ class TicketType extends AbstractType
             ])
             ->add('reduction', CheckboxType::class, [
                 'label' => 'Disposez-vous d\'un tarif réduit, un justificatif vous sera demandé à l\'entrée du musée',
+                'required' => false,
             ]);
     }
 

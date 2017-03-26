@@ -2,6 +2,11 @@
 {% block title %}Commande{% endblock %}
 
 {% block body %}
+    {% if app.session.flashBag.has('alert') %}
+    <div>
+        {{ app.session.flashBag.get('alert')[0] }}
+    </div>
+    {% endif %}
 <div>
     {{ form_start(formStartOrder) }}
     {{ form_widget(formStartOrder.email) }}

@@ -5,7 +5,7 @@ namespace AppBundle\Validator;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class DayClosed
+ * Class DayClosed.
  *
  * @Annotation
  *
