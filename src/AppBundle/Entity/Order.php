@@ -269,7 +269,7 @@ class Order
      *
      * @return Order
      */
-    public function setValid(bool $valid)
+    public function setValid($valid)
     {
         $this->valid = $valid;
 
@@ -289,7 +289,7 @@ class Order
      *
      * @return Order
      */
-    public function setReduction(bool $reduction)
+    public function setReduction($reduction)
     {
         $this->reduction = $reduction;
 
