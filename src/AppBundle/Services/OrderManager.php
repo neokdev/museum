@@ -332,14 +332,14 @@ class OrderManager
                     )
                 );
 
-                //TODO Modale confirmation envoi mail à faire
-
                 $this->mailerService->sendTickets(
                     'E-Billet - Musée du Louvre - N°'.$order->getOrderNumber(),
                     $emailSearch->getEmail(),
                     'email/confirm_order.html.twig',
                     $order
                 );
+
+                RedirectResponse::create('/')->send();
             } catch (EntityNotFoundException $exception) {
                 $this->session->getFlashBag()->add(
                     'error',
