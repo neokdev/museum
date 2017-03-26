@@ -7,7 +7,6 @@ AppBundle\Entity\Order:
         numberTickets: '2'
         totalPrice: '32'
         valid: true
-        reduction: false
         dateOrder: '2017/03/28'
 AppBundle\Entity\Ticket:
     ticket1:

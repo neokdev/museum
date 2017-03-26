@@ -74,13 +74,6 @@ class Order
     private $valid;
 
     /**
-     * @var bool Indicate if order is for half-day or day
-     *
-     * @ORM\Column(name="reduction", type="boolean", nullable=true)
-     */
-    private $reduction;
-
-    /**
      * @var \DateTime Indicade date of order
      *
      * @ORM\Column(name="date_order", type="date")
@@ -272,26 +265,6 @@ class Order
     public function setValid($valid)
     {
         $this->valid = $valid;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReduction()
-    {
-        return $this->reduction;
-    }
-
-    /**
-     * @param bool $reduction
-     *
-     * @return Order
-     */
-    public function setReduction($reduction)
-    {
-        $this->reduction = $reduction;
 
         return $this;
     }
