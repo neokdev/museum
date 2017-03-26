@@ -42,7 +42,6 @@ class OrderManager
     /** @var string Api key for Stripe account */
     private $stripeToken;
 
-
     /**
      * OrderManager constructor.
      *
@@ -264,7 +263,7 @@ class OrderManager
     }
 
     /**
-     * Return order to confirm page and send email to user with tickets
+     * Return order to confirm page and send email to user with tickets.
      *
      * @throws EntityNotFoundException
      *
@@ -381,7 +380,7 @@ class OrderManager
     }
 
     /**
-     * Check if half day booking is possible
+     * Check if half day booking is possible.
      *
      * @param \DateTime $date
      *

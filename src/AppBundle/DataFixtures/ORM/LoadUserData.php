@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Nelmio\Alice\Fixtures;
 
 /**
- * Class LoadUserData
+ * Class LoadUserData.
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
