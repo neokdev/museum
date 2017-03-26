@@ -8,6 +8,9 @@ use AppBundle\Form\Type\OrderType;
 use AppBundle\Form\Type\SearchOrderType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityNotFoundException;
+use Stripe\Charge;
+use Stripe\Error\Card;
+use Stripe\Stripe;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -36,6 +39,10 @@ class OrderManager
     /** @var PriceService Service to calculate price order */
     private $priceService;
 
+    /** @var string Api key for Stripe account */
+    private $stripeToken;
+
+
     /**
      * OrderManager constructor.
      *
@@ -44,19 +51,22 @@ class OrderManager
      * @param Session       $session       Service to manage session
      * @param MailerService $mailerService Service to send email
      * @param PriceService  $priceService  Service to calculate price order
+     * @param string        $stripeToken   Api key for Stripe account
      */
     public function __construct(
         FormFactory $formFactory,
         EntityManager $em,
         Session $session,
         MailerService $mailerService,
-        PriceService $priceService
+        PriceService $priceService,
+        $stripeToken
     ) {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->session = $session;
         $this->mailerService = $mailerService;
         $this->priceService = $priceService;
+        $this->stripeToken = $stripeToken;
     }
 
     /**
@@ -170,11 +180,79 @@ class OrderManager
                     'error',
                     $exception->getMessage()
                 );
+
                 RedirectResponse::create('/')->send();
             }
         }
 
         return $form->createView();
+    }
+
+    /**
+     * Order summary which contain stripe payment.
+     *
+     * @param Request $request
+     *
+     * @return Order
+     */
+    public function summaryOrder(Request $request)
+    {
+        /** @var Order $order */
+        $order = $this->session->get('order');
+
+        try {
+            if (!is_object($order) || !$order) {
+                throw new EntityNotFoundException(
+                    sprintf(
+                        'Vous ne pouvez accéder à cette page s\'il n\'y a pas de commande en cours'
+                    )
+                );
+            }
+        } catch (EntityNotFoundException $exception) {
+            $this->session->getFlashBag()->add(
+                'error',
+                $exception->getMessage()
+            );
+            RedirectResponse::create('/')->send();
+        }
+
+        $this->em->persist($order);
+
+        if ($request->isMethod('POST')) {
+            $token = $request->get('stripeToken');
+
+            if ($token) {
+                $order->setValid(true);
+                try {
+                    Stripe::setApiKey($this->stripeToken);
+
+                    Charge::create([
+                        'amount' => $order->getTotalPrice() * 100,
+                        'currency' => 'eur',
+                        'source' => $token,
+                        'description' => 'Billeterie - Musée du Louvre',
+                    ]);
+
+                    $this->em->flush();
+                    $this->session->getFlashBag()->add(
+                        'success',
+                        'Votre commande est enregistrée, vous recevrez par mail l\'ensemble de vos billets'
+                    );
+                    RedirectResponse::create('confirm')->send();
+                } catch (Card $exception) {
+                    $exception->getMessage();
+                }
+            } else {
+                $this->em->remove($order);
+                $this->session->getFlashBag()->add(
+                    'error',
+                    'Erreur de la validation de votre commande'
+                );
+                RedirectResponse::create('/')->send();
+            }
+        }
+
+        return $order;
     }
 
     /**

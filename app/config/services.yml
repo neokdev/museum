@@ -34,6 +34,7 @@ services:
             - '@session'
             - '@app.mailer_service'
             - '@app.price_service'
+            - '%stripe.token%'
     app.ticket_manager:
         class: AppBundle\Services\TicketManager
         arguments:
