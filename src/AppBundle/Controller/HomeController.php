@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class HomeController
+ * Class HomeController.
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
@@ -47,6 +47,22 @@ class HomeController extends Controller
         return $this->render('default/order_page.html.twig', [
             'formStartOrder' => $formStartOrder,
             'formSearchOrder' => $formSearchOrder,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @Route("/ticket", name="ticket")
+     *
+     * @return Response
+     */
+    public function registerTicketAction(Request $request)
+    {
+        $form = $this->get('app.order_manager')->registerTickets($request);
+
+        return $this->render('default/ticket_page.html.twig', [
+            'form' => $form,
         ]);
     }
 }
