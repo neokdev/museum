@@ -175,7 +175,7 @@ class OrderManager
      */
     private function isEnoughtTicketsForSelectedDay($numberTickets, \DateTime $date)
     {
-        $remainingTickets = 1 - $this->getTicketsRegistered($date);
+        $remainingTickets = 1000 - $this->getTicketsRegistered($date);
 
         if ($numberTickets > $remainingTickets) {
             return false;
