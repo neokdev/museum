@@ -30,3 +30,8 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@session'
             - '@app.mailer_service'
+    app.ticket_manager:
+        class: AppBundle\Services\TicketManager
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@session'
