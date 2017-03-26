@@ -39,6 +39,8 @@ class HomeController extends Controller
      */
     public function orderAction(Request $request)
     {
+        $this->get('app.ticket_manager')->isUnderLimitTicket();
+
         $formSearchOrder = $this->get('app.order_manager')->searchOrder($request);
         $formStartOrder = $this->get('app.order_manager')->startOrder($request);
 
