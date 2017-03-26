@@ -14,15 +14,17 @@ class TicketRepository extends EntityRepository
     /**
      * Return list of tickets by day
      *
+     * @param \DateTime $date Date of selected day
+     *
      * @return array
      */
-    public function getTicketsByDay()
+    public function getTicketsByDay(\DateTime $date)
     {
         return $this->createQueryBuilder('t')
-            ->innerJoin('t.order', 'order')
-            ->addSelect('order')
-            ->where('order.dateVisit = :date')
-            ->setParameter('date', new \DateTime())
+            ->innerJoin('t.order', 'orderRegistration')
+            ->addSelect('orderRegistration')
+            ->where('orderRegistration.dateVisit = :visit')
+            ->setParameter('visit', $date)
             ->getQuery()
             ->getResult();
     }

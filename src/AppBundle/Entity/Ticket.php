@@ -200,7 +200,7 @@ class Ticket
      *
      * @return Ticket
      */
-    public function setNationality(string $nationality)
+    public function setNationality($nationality)
     {
         $this->nationality = $nationality;
 
