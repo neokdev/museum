@@ -1,6 +1,6 @@
 AppBundle\Entity\Order:
     order1:
-        dateVisit: '01/05/2017'
+        dateVisit: '2017/03/27'
         typeTicket: 'Journée'
         email: 'john@doe.com'
         orderNumber: '0123455667'

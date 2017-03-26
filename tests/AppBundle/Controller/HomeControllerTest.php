@@ -7,6 +7,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Nelmio\Alice\Fixtures;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class HomeControllerTest
@@ -17,6 +18,9 @@ class HomeControllerTest extends WebTestCase
 {
     /** @var  EntityManager */
     private $em;
+
+    /** @var  Session */
+    private $session;
 
     /**
      * Functionnal test for homepage and return a successful request
@@ -99,12 +103,37 @@ class HomeControllerTest extends WebTestCase
     }
 
     /**
+     * Functionnal test to check if submit order form is ok without error
+     */
+    public function testSubmitOrderFormWithoutError()
+    {
+        $client = $this->getClient();
+        static::assertTrue($client->getResponse()->isSuccessful());
+
+        $crawler = $client->request('GET', 'order');
+        static::assertTrue($client->getResponse()->isSuccessful(), 'Response should be successful');
+        static::assertEquals(2, $crawler->filter('form')->count());
+        //TODO ecrire test pour le submit du form order et vérifier la redirection.
+        $form = $crawler->selectButton('submit_order')->form();
+        $form['order[email]'] = 'jane@doe.com';
+        $form['order[dateVisit]'] = '2070-01-01';
+        $form['order[typeTicket]']->select(0);
+        $form['order[numberTickets]']->select('1');
+
+//        $this->session->set('order', $form);
+
+        $crawler = $client->submit($form);
+        static::assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    /**
      * Setup functionnal tests
      */
     public function setUp()
     {
         self::bootKernel();
         $this->em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->session = static::$kernel->getContainer()->get('session');
         $schemaTool = new SchemaTool($this->em);
         $metaData = $this->em->getMetadataFactory()->getAllMetadata();
 
