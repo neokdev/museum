@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Class DayClosedValidator
+ * Class DayClosedValidator.
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */

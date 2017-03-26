@@ -16,14 +16,14 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class OrderType
+ * Class OrderType.
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
 class OrderType extends AbstractType
 {
     /**
-     * Build order form to start command
+     * Build order form to start command.
      *
      * {@inheritdoc}
      */

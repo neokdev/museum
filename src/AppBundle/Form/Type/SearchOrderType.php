@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class SearchOrderType
+ * Class SearchOrderType.
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
