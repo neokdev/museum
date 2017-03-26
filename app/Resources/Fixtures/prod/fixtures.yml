@@ -1,0 +1,34 @@
+AppBundle\Entity\Order:
+    order1:
+        dateVisit: "2017-07-14"
+        typeTicket: "Demi-journée"
+        email: "john@doe.com"
+        orderNumber: "<ean13()>"
+        numberTickets: "998"
+        totalPrice: "9998"
+        valid: true
+        dateOrder: "2017-01-01"
+    order2:
+        dateVisit: "<dateTimeBetween($startDate = 'now', $endDate = 'now')>"
+        typeTicket: "Journée"
+        email: "jane@doe.com"
+        orderNumber: "<ean13()>"
+        numberTickets: "950"
+        totalPrice: "9500"
+        valid: true
+        dateOrder: "2017-03-03"
+AppBundle\Entity\Ticket:
+    ticket{1..998}:
+        firstname: "<firstName()>"
+        lastname: "<lastName()>"
+        birthDate: "<date($format = 'Y-m-d', $max = 'now')>"
+        price: "12"
+        nationality: "France"
+        order: "@order1"
+    ticket{999..1948}:
+        firstname: "<firstName()>"
+        lastname: "<lastName()>"
+        birthDate: "<date($format = 'Y-m-d', $max = 'now')>"
+        price: "12"
+        nationality: "France"
+        order: "@order2"
