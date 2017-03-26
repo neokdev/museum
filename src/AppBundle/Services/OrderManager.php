@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
- * Class OrderManager
+ * Class OrderManager.
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
@@ -33,6 +33,9 @@ class OrderManager
     /** @var MailerService Service to send email */
     private $mailerService;
 
+    /** @var PriceService Service to calculate price order */
+    private $priceService;
+
     /**
      * OrderManager constructor.
      *
@@ -40,21 +43,24 @@ class OrderManager
      * @param EntityManager $em            Service to interact with repository
      * @param Session       $session       Service to manage session
      * @param MailerService $mailerService Service to send email
+     * @param PriceService  $priceService  Service to calculate price order
      */
     public function __construct(
         FormFactory $formFactory,
         EntityManager $em,
         Session $session,
-        MailerService $mailerService
+        MailerService $mailerService,
+        PriceService $priceService
     ) {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->session = $session;
         $this->mailerService = $mailerService;
+        $this->priceService = $priceService;
     }
 
     /**
-     * Start booking of order
+     * Start booking of order.
      *
      * @param Request $request
      *
@@ -84,7 +90,7 @@ class OrderManager
 
                 while ($numberTickets > 0) {
                     $order->addTicket(new Ticket());
-                    $numberTickets--;
+                    --$numberTickets;
                 }
 
                 $this->session->set('order', $order);
@@ -93,9 +99,7 @@ class OrderManager
                     'La commande a commencé...'
                 );
 
-                $response = new RedirectResponse('/ticket');
-
-                return $response->send();
+                RedirectResponse::create('/ticket')->send();
             } catch (\Exception $exception) {
                 $this->session->getFlashBag()->add(
                     'error',
@@ -108,7 +112,72 @@ class OrderManager
     }
 
     /**
-     * Return a form to search an specific order by email
+     * Register tickets to order.
+     *
+     * @param Request $request
+     *
+     * @return FormView|RedirectResponse
+     */
+    public function registerTickets(Request $request)
+    {
+        $order = $this->session->get('order');
+
+        try {
+            if (!is_object($order) || !$order) {
+                throw new EntityNotFoundException(
+                    sprintf(
+                        'Vous ne pouvez accéder à cette page si la commande n\'a pas démarré'
+                    )
+                );
+            }
+        } catch (EntityNotFoundException $exception) {
+            $this->session->getFlashBag()->add(
+                'error',
+                $exception->getMessage()
+            );
+
+            RedirectResponse::create('/')->send();
+        }
+
+        $form = $this->formFactory->create(OrderType::class, $order);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $datas = $form->getData();
+
+            try {
+                if (!$this->isEnoughtTicketsForSelectedDay($datas->getNumberTickets(), $datas->getDateVisit())) {
+                    throw new \Exception(
+                        sprintf(
+                            'Il n\'y a pas assez de billets disponible pour le jour demandé: %s',
+                            $datas->getDateVisit()->format('d-m-Y')
+                        )
+                    );
+                }
+                $this->priceService->setTotalPriceOrder($datas);
+                $datas->setOrderNumber(uniqid('', true));
+
+                $this->session->getFlashBag()->add(
+                    'success',
+                    sprintf(
+                        'L\'ensemble de vos billets ont été enregistrés, merci de vérifier les informations avant de procéder au paiement.'
+                    )
+                );
+
+                RedirectResponse::create('summary')->send();
+            } catch (\Exception $exception) {
+                $this->session->getFlashBag()->add(
+                    'error',
+                    $exception->getMessage()
+                );
+            }
+        }
+
+        return $form->createView();
+    }
+
+    /**
+     * Return a form to search an specific order by email.
      *
      * @param Request $request
      *
@@ -166,7 +235,7 @@ class OrderManager
     }
 
     /**
-     * Checks if there are enough tickets available for the requested day
+     * Checks if there are enough tickets available for the requested day.
      *
      * @param int       $numberTickets Number of tickets selected
      * @param \DateTime $date
@@ -175,7 +244,7 @@ class OrderManager
      */
     private function isEnoughtTicketsForSelectedDay($numberTickets, \DateTime $date)
     {
-        $remainingTickets = 0 - $this->getTicketsRegistered($date);
+        $remainingTickets = 1000 - $this->getTicketsRegistered($date);
 
         if ($numberTickets > $remainingTickets) {
             return false;
@@ -185,7 +254,7 @@ class OrderManager
     }
 
     /**
-     * Return number of ticket is register for selected day
+     * Return number of ticket is register for selected day.
      *
      * @param \DateTime $date Date of selected day
      *
