@@ -76,7 +76,7 @@ class OrderManager
                 if (!$this->isEnoughtTicketsForSelectedDay($numberTickets, $datas->getDateVisit())) {
                     throw new \Exception(
                         sprintf(
-                            'Not enough ticket for the requested day: %s',
+                            'Il n\'y a pas assez de billets disponible pour le jour demandé: %s',
                             $datas->getDateVisit()->format('d-m-Y')
                         )
                     );
@@ -175,7 +175,7 @@ class OrderManager
      */
     private function isEnoughtTicketsForSelectedDay($numberTickets, \DateTime $date)
     {
-        $remainingTickets = 1000 - $this->getTicketsRegistered($date);
+        $remainingTickets = 0 - $this->getTicketsRegistered($date);
 
         if ($numberTickets > $remainingTickets) {
             return false;
