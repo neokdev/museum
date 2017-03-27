@@ -1,11 +1,13 @@
 {% extends 'base_email.html.twig' %}
 {% block body %}
-    <h1>Demande :</h1>
-    <p>
-        <u>Date :</u>{{ date|date('d-m-Y')}}<br/>
-        <u>Nom :</u>{{ senderName }}<br/>
-        <u>Mail :</u>{{ senderAddress }}<br/>
-        <u>Sujet :</u>{{ subject }}<br/>
-        <u>Message: </u>{{ message }}
-    </p>
+    <div class="mail">
+        <h1 class="title-mail">Demande utilisateur :</h1>
+        <p>
+            <u>Date :</u> {{ date|date('d-m-Y') }}<br/>
+            <u>Nom :</u> {{ senderName }}<br/>
+            <u>Mail :</u> {{ senderAddress }}<br/>
+            <u>Sujet :</u> {{ subject }}<br/>
+            <u>Message :</u> {{ message }}
+        </p>
+    </div>
 {% endblock %}

@@ -48,3 +48,17 @@ div > .order-button
     margin-top: 50px;
     padding: 30px 30px 30px 30px;
 }
+
+/*----- Mails -------- */
+.mail
+{
+    font-size: 1em;
+}
+.mail > h1
+{
+    font-weight: bold;
+}
+.mail > li
+{
+    font-size: 0.7em;
+}

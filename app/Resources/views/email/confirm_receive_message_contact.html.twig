@@ -1,10 +1,25 @@
 {% extends 'base_email.html.twig' %}
 
 {% block body %}
-        <h1>Bonjour {{ sender }}</h1>
-        <p>Nous avons bien reçu votre demande concernant {{ subject }}</p>
-        <p>
-            Cordialement,<br/>
-            L'équipe du Musée du Louvre.
-        </p>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10">
+                Bonjour {{ sender }},
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>
+                    Nous avons bien reçu votre demande concernant {{ subject }}.
+                </p>
+                <p>
+                    Nous vous répondrons dans les plus brefs délais.
+                </p>
+                <p>
+                    Cordialement,<br/>
+                    L’équipe du Musée du Louvre
+                </p>
+            </div>
+        </div>
+    </div>
 {% endblock %}
