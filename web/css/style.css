@@ -6,7 +6,8 @@
 /* ----  Page accueil   -----*/
 .order-button
 {
-    width: 30%;
+    width: 50%;
+    font-size: 100%;
 }
 div > .order-button
 {
