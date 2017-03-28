@@ -78,6 +78,8 @@ class Ticket
 
     /**
      * @var bool
+     *
+     * @ORM\Column(name="reduction", type="string", nullable=true)
      */
     private $reduction;
 

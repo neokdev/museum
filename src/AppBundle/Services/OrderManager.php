@@ -97,12 +97,14 @@ class OrderManager
                     );
                 }
 
-                if (!$this->isHalfDayPossible($datas->getDateVisit())) {
-                    throw new \Exception(
-                        sprintf(
-                            'Vous ne pouvez plus réserver votre billet pour la journée complète car il est 14h00 passé'
-                        )
-                    );
+                if ($datas->getTypeTicket() == 0) {
+                    if (!$this->isHalfDayPossible($datas->getDateVisit())) {
+                        throw new \Exception(
+                            sprintf(
+                                'Vous ne pouvez plus réserver votre billet pour la journée complète car il est 14h00 passé'
+                            )
+                        );
+                    }
                 }
 
                 while ($numberTickets > 0) {
@@ -233,12 +235,14 @@ class OrderManager
                 try {
                     Stripe::setApiKey($this->stripeToken);
 
-                    Charge::create([
-                        'amount' => $order->getTotalPrice() * 100,
-                        'currency' => 'eur',
-                        'source' => $token,
-                        'description' => 'Billeterie - Musée du Louvre',
-                    ]);
+                    Charge::create(
+                        [
+                            'amount' => $order->getTotalPrice() * 100,
+                            'currency' => 'eur',
+                            'source' => $token,
+                            'description' => 'Billeterie - Musée du Louvre',
+                        ]
+                    );
 
                     $this->em->flush();
                     $this->session->getFlashBag()->add(
@@ -380,6 +384,18 @@ class OrderManager
     }
 
     /**
+     * Return number of ticket is register for selected day.
+     *
+     * @param \DateTime $date Date of selected day
+     *
+     * @return int
+     */
+    private function getTicketsRegistered(\DateTime $date)
+    {
+        return count($this->em->getRepository(Ticket::class)->getTicketsByDay($date));
+    }
+
+    /**
      * Check if half day booking is possible.
      *
      * @param \DateTime $date
@@ -399,17 +415,5 @@ class OrderManager
         }
 
         return true;
-    }
-
-    /**
-     * Return number of ticket is register for selected day.
-     *
-     * @param \DateTime $date Date of selected day
-     *
-     * @return int
-     */
-    private function getTicketsRegistered(\DateTime $date)
-    {
-        return count($this->em->getRepository(Ticket::class)->getTicketsByDay($date));
     }
 }

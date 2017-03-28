@@ -24,22 +24,22 @@
             <div class="col-xs-12">
                 <table class="table table-bordered">
                     <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Tarif</th>
-                            <th>Tarif réduit</th>
-                        </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Tarif</th>
+                        <th>Tarif réduit</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        {% for ticket in order.tickets %}
-                            <tr>
-                                <td>{{ ticket.lastname }}</td>
-                                <td>{{ ticket.firstname }}</td>
-                                <td>{{ ticket.price }} €</td>
-                                <td>{{ ticket.reduction == 'yolo' ? 'Un justificatif vous sera demandé à l\'entrée concernant le tarif réduit' : '' }}</td>
-                            </tr>
-                        {% endfor %}
+                    {% for ticket in order.tickets %}
+                        <tr>
+                            <td>{{ ticket.lastname }}</td>
+                            <td>{{ ticket.firstname }}</td>
+                            <td>{{ ticket.price }} €</td>
+                            <td>{{ ticket.reduction == 'yolo' ? 'Un justificatif vous sera demandé à l\'entrée concernant le tarif réduit' : 'Non demandé' }}</td>
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
