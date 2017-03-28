@@ -52,15 +52,15 @@ class MailerService
      * @param string $subject      Subject of email
      * @param string $message      Content of email
      * @param string $templateMail Name of template mail
-     * @param null   $senderName   Name of sender
-     * @param null   $emailSender  Email of sender
+     * @param string $senderName   Name of sender
+     * @param string $emailSender  Email of sender
      */
     public function sendEmail(
         $subject,
         $message,
         $templateMail,
-        $senderName = null,
-        $emailSender = null
+        $senderName,
+        $emailSender
     ) {
         $mail = \Swift_Message::newInstance()
             ->setSubject($subject)
