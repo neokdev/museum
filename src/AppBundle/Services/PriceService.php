@@ -41,7 +41,9 @@ class PriceService
 
             $age = date_diff($ticket->getBirthDate(), $order->getDateVisit())->y;
             $priceTicket = $this->setPriceForEachTicket($ticket->isReduction(), $age);
-            $ticket->setPrice($priceTicket);
+
+            $order->getTypeTicket() == 1 ? $ticket->setPrice($priceTicket / 2) : $ticket->setPrice($priceTicket);
+
             $ticket->setOrder($order);
 
             $this->totalPrice += $ticket->getPrice();
