@@ -3,24 +3,67 @@
 {% block title %}Récapitulatif{% endblock %}
 
 {% block body %}
-{% for ticket in order.tickets %}
-    {{ ticket.lastname }}<br/>
-    {{ ticket.firstname }}<br/>
-    {{ ticket.price }}<br/>
-    {{ ticket.reduction }}<br/>
-{% endfor %}
-    <form action="" method="POST">
-        <script
-                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="{{ keypublic }}"
-                data-amount="{{ order.totalPrice * 100 }}"
-                data-name="Billeterie - Musée du Louvre"
-                data-currency="eur"
-                data-label="Procéder au paiement"
-                data-email="{{ order.email }}"
-                data-image="http://www.oteis.fr/wp-content/uploads/2016/05/3-1.jpg"
-                data-locale="fr"
-                data-zip-code="true">
-        </script>
-    </form>
+    <h1 class="text-uppercase text-center h1">E-Ticket Musée du Louvre</h1>
+    {% if app.session.flashBag.has('success') %}
+        <div class="row">
+            <div class="col-xs-12 alert alert-info">
+                {{ app.session.flashBag.get('success')[0] }}
+            </div>
+        </div>
+    {% endif %}
+    <div class="container-fluid background-form">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="text-center h2">Récapitulatif de votre commande</h2>
+            </div>
+            <div class="col-xs-12">
+                <hr/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Tarif</th>
+                            <th>Tarif réduit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in order.tickets %}
+                            <tr>
+                                <td>{{ ticket.lastname }}</td>
+                                <td>{{ ticket.firstname }}</td>
+                                <td>{{ ticket.price }} €</td>
+                                <td>{{ ticket.reduction == 'yolo' ? 'Un justificatif vous sera demandé à l\'entrée concernant le tarif réduit' : '' }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <form action="" method="POST">
+            <script
+                    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="{{ keypublic }}"
+                    data-amount="{{ order.totalPrice * 100 }}"
+                    data-name="Billeterie - Musée du Louvre"
+                    data-currency="eur"
+                    data-label="Procéder au paiement"
+                    data-email="{{ order.email }}"
+                    data-image="http://www.oteis.fr/wp-content/uploads/2016/05/3-1.jpg"
+                    data-locale="fr"
+                    data-zip-code="true">
+            </script>
+            <script>
+                // Hide default stripe button, be careful there if you
+                // have more than 1 button of that class
+                document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+            </script>
+            <button type="submit" class="btn btn-default">Procéder au paiement</button>
+        </form>
+    </div>
+
 {% endblock %}

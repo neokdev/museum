@@ -41,7 +41,7 @@ class TicketManager
         if ((1000 - count($this->em->getRepository(Ticket::class)->getTicketsByDay($actualDate))) < 100) {
             $this->session->getFlashBag()->add(
                 'alert',
-                'Il reste moins de 100 billets disponible sur la journée en cours, ne perdez pas de temps'
+                'Alert ! Il reste moins de 100 billets sur la journée en cours, ne perdez pas de temps'
             );
         }
     }

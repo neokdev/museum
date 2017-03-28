@@ -74,7 +74,7 @@ class TicketType extends AbstractType
                 ],
             ])
             ->add('reduction', CheckboxType::class, [
-                'label' => 'Disposez-vous d\'un tarif réduit, un justificatif vous sera demandé à l\'entrée du musée',
+                'label' => 'Disposez-vous d\'un tarif réduit :',
                 'required' => false,
             ]);
     }
