@@ -96,7 +96,7 @@ class MailerService
     {
         $mail = \Swift_Message::newInstance()
             ->setSubject('Confirmation de réception')
-            ->setFrom($this->emailMuseum, $this->nameEmailMuseum)
+            ->setFrom('no-reply-musee@aurelien-morvan.fr')
             ->setTo($emailSender)
             ->setBody(
                 $this->templating->render(
