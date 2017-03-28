@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * Class ContactType.
@@ -39,6 +40,10 @@ class ContactType extends AbstractType
                         new Length([
                             'max' => 38,
                             'maxMessage' => 'Le champ nom fait plus de 38 caractères',
+                        ]),
+                        new Regex([
+                            'pattern' => '/[a-zA-Zéèêëäâà]$/',
+                            'message' => 'Le champ nom peut contenir uniquement des caractères alphabétiques',
                         ]),
                     ],
                 ]

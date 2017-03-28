@@ -20,9 +20,10 @@
             <u>Prénom visiteur :</u> {{ ticket.firstname }} <br/>
             <u>Nom visiteur :</u> {{ ticket.lastname }}<br/>
             {% if ticket.price == 10 %}
-                {% set reduction = 'N\'oubliez pas d\'apporter le justificatif pour votre tarif réduit.' %}
+                <p>
+                    'N\'oubliez pas d\'apporter le justificatif pour votre tarif réduit.' %}
+                </p>
             {% endif %}
-            {{ reduction ? reduction : '' }}
             En vous souhaitant une très bonne visite,<br/>
             L’équipe du Musée du Louvre<br/>
         {% endfor %}

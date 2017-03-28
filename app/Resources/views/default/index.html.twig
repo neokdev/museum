@@ -4,14 +4,14 @@
 
 {% block body %}
     {% if app.session.flashBag.has('success') %}
-        <div class="row ">
-            <div class="col-xs-12 alert alert-success">
+        <div class="row">
+            <div class="col-xs-12 alert alert-success text-center">
                 {{ app.session.flashBag.get('success')[0] }}
             </div>
         </div>
     {% elseif app.session.flashBag.has('error') %}
         <div class="row ">
-            <div class="col-xs-12 alert alert-error">
+            <div class="col-xs-12 alert alert-danger text-center">
                 {{ app.session.flashBag.get('error')[0] }}
             </div>
         </div>
@@ -124,18 +124,22 @@
             <div class="form-group">
                 {{ form_label(form.name) }}
                 {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.name) }}
             </div>
             <div class="form-group">
                 {{ form_label(form.email) }}
                 {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.email) }}
             </div>
             <div class="form-group">
                 {{ form_label(form.subject) }}
                 {{ form_widget(form.subject, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.subject) }}
             </div>
             <div class="form-group">
                 {{ form_label(form.message) }}
                 {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.message) }}
             </div>
 
             <button type="submit" id="submitForm" class="btn btn-default">Envoyer</button>

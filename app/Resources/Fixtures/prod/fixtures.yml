@@ -25,6 +25,7 @@ AppBundle\Entity\Ticket:
         price: "12"
         nationality: "France"
         order: "@order1"
+        reduction: false
     ticket{999..1948}:
         firstname: "<firstName()>"
         lastname: "<lastName()>"
@@ -32,3 +33,4 @@ AppBundle\Entity\Ticket:
         price: "12"
         nationality: "France"
         order: "@order2"
+        reduction: false

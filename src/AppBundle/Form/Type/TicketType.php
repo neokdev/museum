@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * Class TicketType.
@@ -37,6 +38,10 @@ class TicketType extends AbstractType
                         'max' => 38,
                         'maxMessage' => 'Le champ prénom dépasse 38 caractères',
                     ]),
+                    new Regex([
+                        'pattern' => '/[a-zA-Zéèêëäâà]$/',
+                        'message' => 'Le champ nom peut contenir uniquement des caractères alphabétiques',
+                    ]),
                 ],
             ])
             ->add('lastname', TextType::class, [
@@ -49,6 +54,10 @@ class TicketType extends AbstractType
                     new Length([
                         'max' => 38,
                         'maxMessage' => 'Le champ nom dépasse 38 caractères',
+                    ]),
+                    new Regex([
+                        'pattern' => '/[a-zA-Zéèêëäâà]$/',
+                        'message' => 'Le champ nom peut contenir uniquement des caractères alphabétiques',
                     ]),
                 ],
             ])
