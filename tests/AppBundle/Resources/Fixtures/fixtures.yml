@@ -1,0 +1,25 @@
+AppBundle\Entity\Order:
+    order1:
+        dateVisit: '2017/03/27'
+        typeTicket: 'Journée'
+        email: 'john@doe.com'
+        orderNumber: '0123455667'
+        numberTickets: '2'
+        totalPrice: '32'
+        valid: true
+        dateOrder: '2017/03/28'
+AppBundle\Entity\Ticket:
+    ticket1:
+        order: "@order1"
+        firstname: 'John'
+        lastname: 'Doe'
+        birthDate: '1970/01/13'
+        price: '16'
+        nationality: 'France'
+    ticket2:
+        order: "@order1"
+        firstname: 'Jane'
+        lastname: 'Doe'
+        birthDate: '1974/02/28'
+        price: '16'
+        nationality: 'France'

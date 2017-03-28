@@ -13,11 +13,30 @@ services:
             - '%recipient_adress%'
             - '%recipient_name%'
             - '@templating'
-            - '@session'
-
 # Service Contact
     app.contact_service:
         class: AppBundle\Services\ContactService
         arguments:
             - '@form.factory'
             - '@app.mailer_service'
+            - '@session'
+# Service Price
+    app.price_service:
+        class: AppBundle\Services\PriceService
+        public: false
+
+# Manager
+    app.order_manager:
+        class: AppBundle\Services\OrderManager
+        arguments:
+            - '@form.factory'
+            - '@doctrine.orm.entity_manager'
+            - '@session'
+            - '@app.mailer_service'
+            - '@app.price_service'
+            - '%stripe.token%'
+    app.ticket_manager:
+        class: AppBundle\Services\TicketManager
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@session'

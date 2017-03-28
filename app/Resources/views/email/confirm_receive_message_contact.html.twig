@@ -1,11 +1,28 @@
-<!DOCTYPE html>
-<html>
-    <head>
+{% extends 'base_email.html.twig' %}
 
-    </head>
-    <body>
-        <h1>Bonjour {{ sender }}</h1>
-        <p>Nous vous confirmons la réception de votre demande, nous vous répondre dans les plus brefs délais</p>
-        <p>Bonne journée à vous.</p>
-    </body>
-</html>
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10">
+                Bonjour {{ sender }},
+            </div>
+            <div class="col-xs-2">
+                <img src="{{ asset('images/logo.png') }}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>
+                    Nous avons bien reçu votre demande concernant {{ subject }}.
+                </p>
+                <p>
+                    Nous vous répondrons dans les plus brefs délais.
+                </p>
+                <p>
+                    Cordialement,<br/>
+                    L’équipe du Musée du Louvre
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

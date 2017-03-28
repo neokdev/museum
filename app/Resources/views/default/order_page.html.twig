@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block title %}Commande{% endblock %}
+
+{% block body %}
+    <h1 class="text-uppercase text-center h1">E-Ticket Musée du Louvre</h1>
+    {% if app.session.flashBag.has('alert') %}
+        <div class="row ">
+            <div class="col-xs-12 alert alert-info">
+                {{ app.session.flashBag.get('alert')[0] }}
+            </div>
+        </div>
+    {% endif %}
+    {% if app.session.flashBag.has('error') %}
+        <div class="row ">
+            <div class="col-xs-12 alert alert-danger">
+                {{ app.session.flashBag.get('error')[0] }}
+            </div>
+        </div>
+    {% endif %}
+    <div class="container background-form">
+        <div class="row">
+            <div class="col-xs-12">
+                {{ form_start(formStartOrder) }}
+                <div class="form-group">
+                    {{ form_label(formStartOrder.email) }} <span>*</span>
+                    {{ form_widget(formStartOrder.email, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formStartOrder.email) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(formStartOrder.dateVisit) }} <span>*</span>
+                    {{ form_widget(formStartOrder.dateVisit, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formStartOrder.dateVisit) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(formStartOrder.typeTicket) }} <span>*</span>
+                    {{ form_widget(formStartOrder.typeTicket, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formStartOrder.typeTicket) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(formStartOrder.numberTickets) }} <span>*</span>
+                    {{ form_widget(formStartOrder.numberTickets, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formStartOrder.numberTickets) }}
+                </div>
+                <button type="submit" class="btn btn-default" name="submit_order">Commander</button>
+                {{ form_widget(formStartOrder.tickets) }}
+                {{ form_end(formStartOrder) }}
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="h4">
+                    Vous ne retrouvez pas vos billets ? N'hésitez pas à indiquer votre adresse mail pour recevoir vos
+                    billets.
+                </p>
+
+            </div>
+            <div class="col-xs-12">
+                {{ form_start(formSearchOrder) }}
+                <div class="form-group">
+                    {{ form_label(formSearchOrder.email) }}<span>*</span>
+                    {{ form_widget(formSearchOrder.email, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formSearchOrder.email) }}
+                </div>
+                <button type="submit" name="submit_search" class="btn btn-default">Envoyer mes billets</button>
+                {{ form_end(formSearchOrder) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

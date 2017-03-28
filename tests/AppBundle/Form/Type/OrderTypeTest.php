@@ -10,12 +10,12 @@ use Symfony\Component\Form\Test\TypeTestCase;
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
-class OrderTypeTest extends TypeTestCase
+class OrderTypeTest extends AbstractTypeTest
 {
     /**
      * Test order form
      */
-    public function testSubmittedDate()
+    public function testSubmitedValidData()
     {
         $formData = [
             'email' => 'john@doe.com',

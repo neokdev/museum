@@ -30,6 +30,8 @@ class OrderTest extends AbstractEntityTest
             ['orderNumber', 'string', 'ABCDE123456!'],
             ['numberTickets', 'string', '4'],
             ['totalPrice', 'string', '250.00'],
+            ['valid', 'boolean', false],
+            ['dateOrder', 'datetime', new \DateTime()],
             ['tickets', 'collection', new ArrayCollection([$mockTicket])],
         ];
     }

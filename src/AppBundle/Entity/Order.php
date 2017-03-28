@@ -4,14 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Order
+ * Class Order.
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  *
- * @ORM\Table(name="order")
+ * @ORM\Table(name="order_registration")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderRepository")
  */
 class Order
@@ -28,20 +27,12 @@ class Order
     /**
      * @var \DateTime Date of the visit
      *
-     * @Assert\Date(
-     *     message="Vous devez choisir une date"
-     * )
-     *
-     * @ORM\Column(name="date_visit", type="datetime")
+     * @ORM\Column(name="date_visit", type="date")
      */
     private $dateVisit;
 
     /**
      * @var string Type of ticket, day or half-day
-     *
-     * @Assert\NotBlank(
-     *     message="Vous devez choisir un type de ticket"
-     * )
      *
      * @ORM\Column(name="type_ticket", type="string")
      */
@@ -50,45 +41,44 @@ class Order
     /**
      * @var string Email of register
      *
-     * @Assert\NotBlank(
-     *     message="Veuillez saisir une adresse mail"
-     * )
-     * @Assert\Email(
-     *     message="L'adresse mail contient des caractères non autorisés"
-     * )
-     * @Assert\Length(
-     *     max="100",
-     *     maxMessage="L'adresse mail saisie ne peut pas faire plus de 100 caractères"
-     * )
-     *
      * @ORM\Column(name="email", type="string", length=100)
      */
     private $email;
 
     /**
-     * @var string
+     * @var string Unique number of each booking
      *
      * @ORM\Column(name="order_number", type="string", length=30)
      */
     private $orderNumber;
 
     /**
-     * @var string Unique number of each order
-     *
-     * @Assert\NotBlank(
-     *     message="Vous devez choisir le nombre de ticket souhaités"
-     * )
+     * @var string Number of tickets into each order
      *
      * @ORM\Column(name="number_tickets", type="string")
      */
     private $numberTickets;
 
     /**
-     * @var string Total price for each order
+     * @var string Total price for each booking
      *
      * @ORM\Column(name="total_price", type="string")
      */
     private $totalPrice;
+
+    /**
+     * @var bool Indicate if order is valid
+     *
+     * @ORM\Column(name="valid", type="boolean")
+     */
+    private $valid;
+
+    /**
+     * @var \DateTime Indicade date of order
+     *
+     * @ORM\Column(name="date_order", type="date")
+     */
+    private $dateOrder;
 
     /**
      * @var Ticket[] Contains one or many tickets
@@ -106,7 +96,7 @@ class Order
     }
 
     /**
-     * Return order id
+     * Return order id.
      *
      * @return int
      */
@@ -116,7 +106,7 @@ class Order
     }
 
     /**
-     * Return date of visit
+     * Return date of visit.
      *
      * @return \DateTime
      */
@@ -126,7 +116,7 @@ class Order
     }
 
     /**
-     * Define date of visit
+     * Define date of visit.
      *
      * @param \DateTime $dateVisit Date of visit
      *
@@ -140,7 +130,7 @@ class Order
     }
 
     /**
-     * Return type of ticket for order
+     * Return type of ticket for order.
      *
      * @return string
      */
@@ -150,7 +140,7 @@ class Order
     }
 
     /**
-     * Define type of ticket for order
+     * Define type of ticket for order.
      *
      * @param string $typeTicket Type of ticket
      *
@@ -164,7 +154,7 @@ class Order
     }
 
     /**
-     * Return email register
+     * Return email register.
      *
      * @return string
      */
@@ -174,7 +164,7 @@ class Order
     }
 
     /**
-     * Define email register
+     * Define email register.
      *
      * @param string $email Email register for order
      *
@@ -188,7 +178,7 @@ class Order
     }
 
     /**
-     * Return unique number generate at the end of order
+     * Return unique number generate at the end of order.
      *
      * @return string
      */
@@ -198,7 +188,7 @@ class Order
     }
 
     /**
-     * Define unique number
+     * Define unique number.
      *
      * @param string $orderNumber Unique number generate
      *
@@ -212,7 +202,7 @@ class Order
     }
 
     /**
-     * Return number of ticket for order
+     * Return number of ticket for order.
      *
      * @return string
      */
@@ -222,7 +212,7 @@ class Order
     }
 
     /**
-     * Set number of ticket for order
+     * Set number of ticket for order.
      *
      * @param string $numberTickets Number of tickets for order
      *
@@ -236,7 +226,7 @@ class Order
     }
 
     /**
-     * Return total price for order
+     * Return total price for order.
      *
      * @return string
      */
@@ -246,7 +236,7 @@ class Order
     }
 
     /**
-     * Define total price for order
+     * Define total price for order.
      *
      * @param string $totalPrice Total price for order
      *
@@ -260,7 +250,47 @@ class Order
     }
 
     /**
-     * Return all tickets from order
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->valid;
+    }
+
+    /**
+     * @param bool $valid
+     *
+     * @return Order
+     */
+    public function setValid($valid)
+    {
+        $this->valid = $valid;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateOrder()
+    {
+        return $this->dateOrder;
+    }
+
+    /**
+     * @param \DateTime $dateOrder
+     *
+     * @return Order
+     */
+    public function setDateOrder(\DateTime $dateOrder)
+    {
+        $this->dateOrder = $dateOrder;
+
+        return $this;
+    }
+
+    /**
+     * Return all tickets from order.
      *
      * @return Ticket[]
      */
@@ -270,7 +300,7 @@ class Order
     }
 
     /**
-     * Add a ticket to order
+     * Add a ticket to order.
      *
      * @param Ticket $ticket Ticket to add to order
      *
@@ -284,7 +314,7 @@ class Order
     }
 
     /**
-     * Remove a ticket from order
+     * Remove a ticket from order.
      *
      * @param Ticket $ticket Ticket to remove to order
      */

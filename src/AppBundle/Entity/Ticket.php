@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Ticket
+ * Class Ticket.
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  *
@@ -15,13 +15,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Ticket
 {
     const
-        /** @var int Normal ticket price */
+        /* @var int Normal ticket price */
         NORMAL_RATE = 16,
-        /** @var int Children ticket price */
+        /* @var int Children ticket price */
         CHILD_RATE = 8,
-        /** @var int Senior ticket price */
+        /* @var int Senior ticket price */
         SENIOR_RATE = 12,
-        /** @var int Reduced ticket price */
+        /* @var int Reduced ticket price */
         REDUCED_RATE = 10;
 
     /**
@@ -62,6 +62,13 @@ class Ticket
     private $price;
 
     /**
+     * @var string Nationality of ticket owner
+     *
+     * @ORM\Column(name="nationality", type="string", length=45)
+     */
+    private $nationality;
+
+    /**
      * @var Order Id of the order attached to the ticket
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Order", inversedBy="tickets")
@@ -70,7 +77,14 @@ class Ticket
     private $order;
 
     /**
-     * Return ticket id
+     * @var bool
+     *
+     * @ORM\Column(name="reduction", type="string", nullable=true)
+     */
+    private $reduction;
+
+    /**
+     * Return ticket id.
      *
      * @return int
      */
@@ -80,7 +94,7 @@ class Ticket
     }
 
     /**
-     * Return firstname of the ticket holder
+     * Return firstname of the ticket holder.
      *
      * @return string
      */
@@ -90,7 +104,7 @@ class Ticket
     }
 
     /**
-     * Define firstname of the ticket holder
+     * Define firstname of the ticket holder.
      *
      * @param string $firstname Firstname of the ticket holder
      *
@@ -104,7 +118,7 @@ class Ticket
     }
 
     /**
-     * Return lastname of the ticket holder
+     * Return lastname of the ticket holder.
      *
      * @return string
      */
@@ -114,7 +128,7 @@ class Ticket
     }
 
     /**
-     * Define lastname of the ticket holder
+     * Define lastname of the ticket holder.
      *
      * @param string $lastname Lastname of the ticket holder
      *
@@ -128,7 +142,7 @@ class Ticket
     }
 
     /**
-     * Return birthdate of the ticket holder
+     * Return birthdate of the ticket holder.
      *
      * @return \DateTime
      */
@@ -138,7 +152,7 @@ class Ticket
     }
 
     /**
-     * Define birthdate of the ticket holder
+     * Define birthdate of the ticket holder.
      *
      * @param \DateTime $birthDate Birthdate of the ticket holder
      *
@@ -152,7 +166,7 @@ class Ticket
     }
 
     /**
-     * Return price of the ticket holder
+     * Return price of the ticket holder.
      *
      * @return int
      */
@@ -162,7 +176,7 @@ class Ticket
     }
 
     /**
-     * Define price of the ticket holder
+     * Define price of the ticket holder.
      *
      * @param int $price Price of the ticket holder
      *
@@ -176,7 +190,27 @@ class Ticket
     }
 
     /**
-     * Return order id attached to the ticket
+     * @return string
+     */
+    public function getNationality()
+    {
+        return $this->nationality;
+    }
+
+    /**
+     * @param string $nationality
+     *
+     * @return Ticket
+     */
+    public function setNationality($nationality)
+    {
+        $this->nationality = $nationality;
+
+        return $this;
+    }
+
+    /**
+     * Return order id attached to the ticket.
      *
      * @return Order
      */
@@ -186,7 +220,7 @@ class Ticket
     }
 
     /**
-     * Define order id attached to the ticket
+     * Define order id attached to the ticket.
      *
      * @param Order $order Order id attache to the ticket
      *
@@ -195,6 +229,26 @@ class Ticket
     public function setOrder(Order $order)
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReduction()
+    {
+        return $this->reduction;
+    }
+
+    /**
+     * @param bool $reduction
+     *
+     * @return Ticket
+     */
+    public function setReduction($reduction)
+    {
+        $this->reduction = $reduction;
 
         return $this;
     }

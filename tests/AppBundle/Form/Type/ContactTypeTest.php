@@ -3,14 +3,19 @@
 namespace tests\AppBundle\Form\Type;
 
 use AppBundle\Form\Type\ContactType;
+use Symfony\Component\Form\Extension\Core\CoreExtension;
+use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
+use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class ContactTypeTest
  *
  * @author Aurélien Morvan <contact@aurelien-morvan.fr>
  */
-class ContactTypeTest extends TypeTestCase
+class ContactTypeTest extends AbstractTypeTest
 {
     /**
      * Test contact form

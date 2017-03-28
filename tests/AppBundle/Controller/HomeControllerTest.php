@@ -2,12 +2,12 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Nelmio\Alice\Fixtures;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class HomeControllerTest
@@ -19,13 +19,15 @@ class HomeControllerTest extends WebTestCase
     /** @var  EntityManager */
     private $em;
 
+    /** @var  Session */
+    private $session;
+
     /**
      * Functionnal test for homepage and return a successful request
      */
     public function testIndexAction()
     {
         $client = $this->getClient();
-
         static::assertTrue($client->getResponse()->isSuccessful());
 
         $crawler = $client->request('GET', '/');
@@ -48,25 +50,64 @@ class HomeControllerTest extends WebTestCase
         $form['contact[message]'] = 'Question';
 
         $crawler = $client->submit($form);
-
-        if ($profile = $client->getProfile()) {
-            $swiftMailerProfiler = $profile->getCollector('swiftmailer');
-
-            static::assertEquals(2, $swiftMailerProfiler->getMessageCount());
-        }
-
-        static::assertEquals('1', $crawler->filter('.flash-message:contains("Le mail a bien été envoyé")')->count());
     }
 
     /**
-     * @return Client
+     * Functionnal test to check if access order page is ok
+     * Must display two forms
      */
-    private function getClient()
+    public function testAccessOrderPage()
     {
-        $client = static::createClient();
-        $client->request('GET', '/');
+        $client = $this->getClient();
+        static::assertTrue($client->getResponse()->isSuccessful());
 
-        return $client;
+        $crawler = $client->request('GET', 'order');
+        static::assertTrue($client->getResponse()->isSuccessful(), 'Response should be successful');
+        static::assertEquals(2, $crawler->filter('form')->count());
+    }
+
+    /**
+     * Funtionnal test to recovery order by mail
+     */
+    public function testRecoveryTicketsIfExist()
+    {
+        Fixtures::load($this->getFixtures(), $this->em);
+
+        $client = $this->getClient();
+        static::assertTrue($client->getResponse()->isSuccessful());
+
+        $crawler = $client->request('GET', 'order');
+        static::assertTrue($client->getResponse()->isSuccessful(), 'Response should be successful');
+        static::assertEquals(2, $crawler->filter('form')->count());
+
+        $form = $crawler->selectButton('submit_search')->form();
+        $form['search_order[email]'] = 'john@doe.com';
+
+        $client->submit($form);
+    }
+
+    /**
+     * Functionnal test to check if submit order form is ok without error
+     */
+    public function testSubmitOrderFormWithoutError()
+    {
+        $client = $this->getClient();
+        static::assertTrue($client->getResponse()->isSuccessful());
+
+        $crawler = $client->request('GET', 'order');
+        static::assertTrue($client->getResponse()->isSuccessful(), 'Response should be successful');
+        static::assertEquals(2, $crawler->filter('form')->count());
+        //TODO ecrire test pour le submit du form order et vérifier la redirection.
+        $form = $crawler->selectButton('submit_order')->form();
+        $form['order[email]'] = 'jane@doe.com';
+        $form['order[dateVisit]'] = '2070-01-01';
+        $form['order[typeTicket]']->select(0);
+        $form['order[numberTickets]']->select('1');
+
+//        $this->session->set('order', $form);
+
+        $crawler = $client->submit($form);
+        static::assertTrue($client->getResponse()->isSuccessful());
     }
 
     /**
@@ -76,6 +117,7 @@ class HomeControllerTest extends WebTestCase
     {
         self::bootKernel();
         $this->em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->session = static::$kernel->getContainer()->get('session');
         $schemaTool = new SchemaTool($this->em);
         $metaData = $this->em->getMetadataFactory()->getAllMetadata();
 
@@ -93,5 +135,16 @@ class HomeControllerTest extends WebTestCase
         return [
             __DIR__.'/../Resources/Fixtures/fixtures.yml',
         ];
+    }
+
+    /**
+     * @return Client
+     */
+    private function getClient()
+    {
+        $client = static::createClient();
+        $client->request('GET', '/');
+
+        return $client;
     }
 }

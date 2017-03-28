@@ -2,12 +2,11 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\Order;
 use Symfony\Bundle\TwigBundle\TwigEngine;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
- * Class MailerService
+ * Class MailerService.
  *
  * This service has been used to send generic email
  *
@@ -18,17 +17,14 @@ class MailerService
     /** @var \Swift_Mailer Swift mailer service */
     private $mailer;
 
-    /** @var  string Email of museum define in parameters file */
+    /** @var string Email of museum define in parameters file */
     private $emailMuseum;
 
-    /** @var  string Name email of museum define in parameters file */
+    /** @var string Name email of museum define in parameters file */
     private $nameEmailMuseum;
 
     /** @var TwigEngine Twig engine service */
     private $templating;
-
-    /** @var  Session Session service */
-    private $session;
 
     /**
      * MailerService constructor.
@@ -37,75 +33,66 @@ class MailerService
      * @param string        $emailMuseum     Email of museum
      * @param string        $nameEmailMuseum Name for email of museum
      * @param TwigEngine    $templating      Service twig engine
-     * @param Session       $session         Service Session
      */
     public function __construct(
         \Swift_Mailer $mailer,
         $emailMuseum,
         $nameEmailMuseum,
-        TwigEngine $templating,
-        Session $session
+        TwigEngine $templating
     ) {
         $this->mailer = $mailer;
         $this->emailMuseum = $emailMuseum;
         $this->nameEmailMuseum = $nameEmailMuseum;
         $this->templating = $templating;
-        $this->session = $session;
     }
 
     /**
-     * This method allows to send a mail generically according to the parameters passed during the call
+     * This method allows to send a mail generically according to the parameters passed during the call.
      *
-     * @param string $subject         Subject of email
-     * @param string $message         Content of email
-     * @param null   $senderName      Name of sender
-     * @param null   $emailSender     Email of sender
-     * @param null   $recipientTo     Email of recipient
-     * @param null   $recipientToName Name of recipient
+     * @param string $subject      Subject of email
+     * @param string $message      Content of email
+     * @param string $templateMail Name of template mail
+     * @param null   $senderName   Name of sender
+     * @param null   $emailSender  Email of sender
      */
     public function sendEmail(
         $subject,
         $message,
+        $templateMail,
         $senderName = null,
-        $emailSender = null,
-        $recipientTo = null,
-        $recipientToName = null
+        $emailSender = null
     ) {
-        $senderName = $senderName ? $senderName : $this->nameEmailMuseum;
-        $senderAdress = $emailSender ? $emailSender : $this->emailMuseum;
-
-        $recipientName = $recipientToName ? $recipientToName : $this->nameEmailMuseum;
-        $recipientAdress = $recipientTo ? $recipientTo : $this->emailMuseum;
-
         $mail = \Swift_Message::newInstance()
             ->setSubject($subject)
-            ->setFrom($senderAdress, $senderName)
-            ->setTo($recipientAdress, $recipientName)
+            ->setFrom($emailSender, $senderName)
+            ->setTo($this->emailMuseum, $this->nameEmailMuseum)
             ->setBody(
                 $this->templating->render(
-                    'email/contact_form.html.twig',
+                    $templateMail,
                     [
+                        'subject' => $subject,
+                        'senderName' => $senderName,
+                        'senderAddress' => $emailSender,
                         'message' => $message,
+                        'date' => new \DateTime(),
+
                     ]
                 ),
                 'text/html'
             );
 
         $this->mailer->send($mail);
-
-        $this->session->getFlashBag()->set(
-            'sendmail',
-            'Le mail a bien été envoyé'
-        );
     }
 
     /**
-     * This method send an automatic mail for each mail send from contact form
+     * This method send an automatic mail for each mail send from contact form.
      *
-     * @param string $emailSender Email of sender
-     * @param string $sender      Name of sender
+     * @param string $emailSender  Email of sender
+     * @param string $sender       Name of sender
+     * @param string $subject      Subject of the application
+     * @param string $templateMail Template for this automatic reply
      */
-    public function automaticReplyContactForm($emailSender, $sender)
+    public function automaticReplyContactForm($emailSender, $sender, $subject, $templateMail)
     {
         $mail = \Swift_Message::newInstance()
             ->setSubject('Confirmation de réception')
@@ -113,9 +100,35 @@ class MailerService
             ->setTo($emailSender)
             ->setBody(
                 $this->templating->render(
-                    'email/confirm_receive_message_contact.html.twig',
+                    $templateMail,
                     [
                         'sender' => $sender,
+                        'subject' => $subject,
+                    ]
+                ),
+                'text/html'
+            );
+
+        $this->mailer->send($mail);
+    }
+
+    /**
+     * @param string $subject        Subject of mail
+     * @param string $emailRecipient Email recipient of mail
+     * @param string $templateMail   Template has been load
+     * @param Order  $order          Order
+     */
+    public function sendTickets($subject, $emailRecipient, $templateMail, Order $order)
+    {
+        $mail = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($this->emailMuseum, $this->nameEmailMuseum)
+            ->setTo($emailRecipient)
+            ->setBody(
+                $this->templating->render(
+                    $templateMail,
+                    [
+                        'order' => $order,
                     ]
                 ),
                 'text/html'

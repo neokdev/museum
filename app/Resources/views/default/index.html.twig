@@ -3,15 +3,23 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <div class="flash-message">
-        {% for message in app.session.flashBag.get('sendmail')%}
-            {{ message }}
-        {% endfor %}
-    </div>
+    {% if app.session.flashBag.has('success') %}
+        <div class="row">
+            <div class="col-xs-12 alert alert-success text-center">
+                {{ app.session.flashBag.get('success')[0] }}
+            </div>
+        </div>
+    {% elseif app.session.flashBag.has('error') %}
+        <div class="row ">
+            <div class="col-xs-12 alert alert-danger text-center">
+                {{ app.session.flashBag.get('error')[0] }}
+            </div>
+        </div>
+    {% endif %}
 
     <div class="row" xmlns="http://www.w3.org/1999/html">
         <div class="col-xs-12 text-center text-uppercase">
-            <a class="btn btn-default order-button" href="#" role="button">
+            <a class="btn btn-default order-button" href="{{ path('order') }}" role="button">
                 <strong>Réserver mes billets</strong>
             </a>
         </div>
@@ -22,30 +30,47 @@
             <h1 class="title-info text-center text-uppercase">Informations</h1>
             <hr class="line"/>
         </div>
-        <div class="col-xs-12 col-md-5 col-md-offset-1">
+        <div class="col-xs-12 col-md-6">
             <div class="col-xs-1">
                 <i class="glyphicon glyphicon-time"></i>
             </div>
             <div class="col-xs-11">
-                <p>
-                    Ouvert tous les jours de 9h à 18h sauf le mardi.<br/>
-                    Nocturnes jusqu'à 21h45 le mercredi et le vendredi.<br/>
-                    Le musée ferme ses portes le 1er mai, 1er novembre et 25 décembre.
-                </p>
+                <ul class="list-group">
+                    <li class="list-group-item-text list-unstyled">
+                        Ouvert tous les jours de 9h à 18h sauf le mardi.
+                    </li>
+                    <li class="list-group-item-text list-unstyled">
+                        Nocturnes jusqu'à 21h45 le mercredi et le vendredi.<br/>
+                    </li>
+                    <li class="list-group-item-text list-unstyled">
+                        Le musée ferme ses portes le 1er mai, 1er novembre et 25 décembre.
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="col-xs-12 col-md-5">
+        <div class="col-xs-12 col-md-6">
             <div class="col-xs-1">
                 <i class="glyphicon glyphicon-euro"></i>
             </div>
             <div class="col-xs-11">
-                <p>
-                    Tarif "normal" à partir de 12ans: <strong>16€</strong>
-                    Tarif "enfant" de 4ans à 12ans: <strong>8€</strong>
-                    Tarif "sénior" à partir de 60ans: <strong>12€</strong>
-                    Tarif "réduit" accordé dans certaines conditions (étudiant, employé du musée, d'un service du Ministère
-                    de la Culture, mulitaire...): <strong>10€</strong>
-                </p>
+
+                <ul class="list-group list-unstyled">
+                    <li class="list-group-text">
+                        Tarif "normal" à partir de 12ans: <strong>16€</strong>
+                    </li>
+                    <li class="list-group-text">
+                        Tarif "enfant" de 4ans à 12ans: <strong>8€</strong>
+                    </li>
+                    <li class="list-group-text">
+                        Tarif "sénior" à partir de 60ans: <strong>12€</strong>
+                    </li>
+                    <li class="list-group-text">
+                        Tarif "réduit" accordé dans certaines conditions (étudiant, employé du musée, d'un service du
+                        Ministère
+                        de la Culture, mulitaire...): <strong>10€</strong>
+                    </li>
+                </ul>
+
             </div>
         </div>
     </div>
@@ -75,7 +100,7 @@
                     </div>
                     <div class="col-xs-11">
                         <p>
-                            <a href="mailto:contact-museum@aurelien-morvan.fr">contact-museum@aurelien-morvan.fr</a>
+                            <a href="mailto:musee@aurelien-morvan.fr">musee@aurelien-morvan.fr</a>
                         </p>
                     </div>
                 </div>
@@ -96,24 +121,28 @@
 
         <div class="col-xs-12 col-md-offset-1 col-md-7 background-form-contact">
             {{ form_start(form) }}
-                <div class="form-group">
-                    {{ form_label(form.name) }}
-                    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-                </div>
-                <div class="form-group">
-                    {{ form_label(form.email) }}
-                    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-                </div>
-                <div class="form-group">
-                    {{ form_label(form.subject) }}
-                    {{ form_widget(form.subject, {'attr': {'class': 'form-control'}}) }}
-                </div>
-                <div class="form-group">
-                    {{ form_label(form.message) }}
-                    {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
-                </div>
+            <div class="form-group">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.email) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.subject) }}
+                {{ form_widget(form.subject, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.subject) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.message) }}
+                {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.message) }}
+            </div>
 
-                <button type="submit" id="submitForm" class="btn btn-default">Envoyer</button>
+            <button type="submit" id="submitForm" class="btn btn-default">Envoyer</button>
             {{ form_end(form) }}
         </div>
     </div>

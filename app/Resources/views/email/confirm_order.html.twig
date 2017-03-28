@@ -1,0 +1,33 @@
+{% extends 'base_email.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    Musée du Louvres       <img src="{{ asset('images/logo.png') }}"/> <br/>
+    Cher futur visiteur,<br/>
+    Nous vous confirmons la bonne réception de votre commande et vous trouverez ci-dessous toutes les informations vous permettant d’accéder au Musée du Louvre.
+    <br/>
+    <p>
+        Garder précieusement ce mail et pensez à l’imprimer car il vous sera demandé à l’entrée du Musée.
+    </p>
+    <p>
+        <u>Date de la visite :</u> {{ order.dateVisit|date('d-m-Y') }}<br/>
+        <u>Tarif :</u> {{ order.totalPrice }}<br/>
+        <u>Code réservation :</u> {{ order.orderNumber }}
+    </p>
+    <p>
+        {% for ticket in order.tickets %}
+            <u>Prénom visiteur :</u> {{ ticket.firstname }} <br/>
+            <u>Nom visiteur :</u> {{ ticket.lastname }}<br/>
+            {% if ticket.price == 10 %}
+                <p>
+                    'N\'oubliez pas d\'apporter le justificatif pour votre tarif réduit.' %}
+                </p>
+            {% endif %}
+            En vous souhaitant une très bonne visite,<br/>
+            L’équipe du Musée du Louvre<br/>
+        {% endfor %}
+
+    </p>
+
+{% endblock %}
