@@ -130,7 +130,8 @@ class MailerService
                     [
                         'order' => $order,
                     ]
-                )
+                ),
+                'text/html'
             );
 
         $this->mailer->send($mail);

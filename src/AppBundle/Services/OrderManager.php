@@ -253,7 +253,7 @@ class OrderManager
                 $this->em->remove($order);
                 $this->session->getFlashBag()->add(
                     'error',
-                    'Erreur de la validation de votre commande'
+                    'Erreur de validation sur votre commande'
                 );
                 RedirectResponse::create('/')->send();
             }
