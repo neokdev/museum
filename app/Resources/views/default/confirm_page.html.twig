@@ -3,27 +3,46 @@
 {% block title %}Confirmation{% endblock %}
 
 {% block body %}
+    <h1 class="text-uppercase text-center h1">E-Ticket Musée du Louvre</h1>
     {% if app.session.flashBag.has('success') %}
-        {{ app.session.flashBag.get('success')[0] }}
+        <div class="row">
+            <div class="col-xs-12 alert alert-info">
+                {{ app.session.flashBag.get('success')[0] }}
+            </div>
+        </div>
     {% endif %}
-        <h1>E-ticket Musée du Louvre</h1>
-        <h2>Confirmation de commande</h2>
-        <p>
-            Nous vous confirmons votre commande et vous en remercions
-        </p>
-        <p>
-            Comme indiqué lors de la commande de vos billets, ceux-ci seront valable pour le {{ order.dateVisit|date('d-m-Y') }} sur
-            {% if order.typeTicket == 0 %}
-                toute la journée
-            {% else %}
-                la demi-journée
-            {% endif %}
-        </p>
-        <p>
-            Vous allez recevoir sous peu, l'ensemble de vos billets par mail, le mail faisant foi de billet.
-        </p>
-        <p>
-            N'oubliez pas de les imprimer, ils vous seront demandés à l'entrée du Musée.<br/>
-            A bientôt et bonne visite lors de votre venue au Musée du Louvre.
-        </p>
-        {% endblock %}
+    <div class="container-fluid background-form">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="text-center h2">Récapitulatif de votre commande</h2>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <hr/>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>
+                    Nous vous confirmons votre commande et vous en remercions
+                </p>
+                <p>
+                    Comme indiqué lors de la commande de vos billets, ceux-ci seront valable pour
+                    le {{ order.dateVisit|date('d-m-Y') }} sur
+                    {% if order.typeTicket == 0 %}
+                        toute la journée
+                    {% else %}
+                        la demi-journée
+                    {% endif %}
+                </p>
+                <p>
+                    Vous allez recevoir sous peu, l'ensemble de vos billets par mail, le mail faisant foi de billet.
+                </p>
+                <p>
+                    N'oubliez pas de les imprimer, ils vous seront demandés à l'entrée du Musée.<br/>
+                    A bientôt et bonne visite lors de votre venue au Musée du Louvre.
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

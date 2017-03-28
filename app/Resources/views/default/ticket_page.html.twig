@@ -2,32 +2,68 @@
 {% block title %}Ticket{% endblock %}
 
 {% block body %}
-        {% if app.session.flashBag.has('success')%}
-            {{ app.session.flashBag.get('success')[0] }}
-        {% endif %}
-
-{% set numberTicket = form.tickets.count %}
-
-{{ form_start(form) }}
-{{ form_widget(form.email, {'attr': {'hidden':'hidden'}}) }}
-{{ form_widget(form.dateVisit, {'attr': {'hidden':'hidden'}}) }}
-{{ form_widget(form.typeTicket, {'attr': {'hidden':'hidden'}}) }}
-{{ form_widget(form.numberTickets, {'attr': {'hidden':'hidden'}}) }}
-    {% for ticket in form.tickets %}
-        <div>
-        {{ form_label(ticket.firstname) }}
-        {{ form_widget(ticket.firstname) }}
-        {{ form_label(ticket.lastname) }}
-        {{ form_widget(ticket.lastname) }}
-        {{ form_label(ticket.birthDate) }}
-        {{ form_widget(ticket.birthDate) }}
-        {{ form_label(ticket.nationality) }}
-        {{ form_widget(ticket.nationality) }}
-        {{ form_label(ticket.reduction) }}
-        {{ form_widget(ticket.reduction) }}
+    {% set numberTicket = form.tickets.count %}
+    <h1 class="text-uppercase text-center h1">E-Ticket Musée du Louvre</h1>
+    {% if app.session.flashBag.has('success') %}
+        <div class="row">
+            <div class="col-xs-12 alert alert-info">
+                {{ app.session.flashBag.get('success')[0] }}
+            </div>
         </div>
-    {% endfor %}
-<button type="submit" name="Valid">Récapitulatif</button>
-{{ form_end(form) }}
+    {% endif %}
+    {{ form_start(form) }}
+    {{ form_widget(form.email, {'attr': {'hidden':'hidden'}}) }}
+    {{ form_widget(form.dateVisit, {'attr': {'hidden':'hidden'}}) }}
+    {{ form_widget(form.typeTicket, {'attr': {'hidden':'hidden'}}) }}
+    {{ form_widget(form.numberTickets, {'attr': {'hidden':'hidden'}}) }}
+    <div class="container background-form">
+        <div class="row">
+            <div class="col-xs-12">
+                {% for ticket in form.tickets %}
+                    <div class="row">
+                        <div class="form-group col-xs-12 col-md-6">
+                            {{ form_label(ticket.firstname) }} <span>*</span>
+                            {{ form_widget(ticket.firstname, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(ticket.firstname) }}
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6">
+                            {{ form_label(ticket.lastname) }} <span>*</span>
+                            {{ form_widget(ticket.lastname, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(ticket.lastname) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-12 col-md-6">
+                            {{ form_label(ticket.birthDate) }} <span>*</span>
+                            {{ form_widget(ticket.birthDate, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(ticket.birthDate) }}
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <i class="glyphicon glyphicon-info-sign">
+                                Un justificatif peut-être demandé à l'entrée.
+                            </i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-12 col-md-6">
+                            {{ form_label(ticket.nationality) }} <span>*</span>
+                            {{ form_widget(ticket.nationality, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(ticket.nationality) }}
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6">
+                            {{ form_label(ticket.reduction) }}
+                            {{ form_widget(ticket.reduction, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(ticket.reduction) }}
+                        </div>
+                    </div>
+                    <hr/>
+                {% endfor %}
+                <div class="col-xs-12">
+                    <button type="submit" name="Valid" class="btn btn-default">Récapitulatif</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
