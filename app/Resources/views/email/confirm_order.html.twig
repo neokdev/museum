@@ -3,7 +3,7 @@
 {% block title %}{% endblock %}
 
 {% block body %}
-    Musée du Louvres       <img src="{{ asset('images/logo.png') }}"/> <br/>
+    Musée du Louvres       <img src="../../../../web/images/logo.png"/> <br/>
     Cher futur visiteur,<br/>
     Nous vous confirmons la bonne réception de votre commande et vous trouverez ci-dessous toutes les informations vous permettant d’accéder au Musée du Louvre.
     <br/>
@@ -20,8 +20,8 @@
             <u>Prénom visiteur :</u> {{ ticket.firstname }} <br/>
             <u>Nom visiteur :</u> {{ ticket.lastname }}<br/>
             {% if ticket.price == 10 %}
-                <p>
-                    'N\'oubliez pas d\'apporter le justificatif pour votre tarif réduit.' %}
+                <p class="text-info">
+                    'N\'oubliez pas d\'apporter le justificatif pour votre tarif réduit.'
                 </p>
             {% endif %}
             En vous souhaitant une très bonne visite,<br/>
