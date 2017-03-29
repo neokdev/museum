@@ -9,12 +9,21 @@ AppBundle\Entity\Order:
         valid: true
         dateOrder: "2017-01-01"
     order2:
-        dateVisit: "2017-03-29"
+        dateVisit: "<dateTimeBetween($startDate = 'now', $endDate = 'now', $timezone = date_default_timezone_get())>"
         typeTicket: "Journée"
         email: "jane@doe.com"
         orderNumber: "<ean13()>"
         numberTickets: "950"
         totalPrice: "9500"
+        valid: true
+        dateOrder: "2017-03-03"
+    order3:
+        dateVisit: "2017-06-19"
+        typeTicket: "Journée"
+        email: "%email_test_form%"
+        orderNumber: "<ean13()>"
+        numberTickets: "1"
+        totalPrice: "16"
         valid: true
         dateOrder: "2017-03-03"
 AppBundle\Entity\Ticket:
@@ -33,4 +42,12 @@ AppBundle\Entity\Ticket:
         price: "12"
         nationality: "France"
         order: "@order2"
+        reduction: false
+    ticket1949:
+        firstname: "<firstName()>"
+        lastname: "<lastName()>"
+        birthDate: "<date($format = 'Y-m-d', $max = 'now')>"
+        price: "16"
+        nationality: "France"
+        order: "@order3"
         reduction: false
