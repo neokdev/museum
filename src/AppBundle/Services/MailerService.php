@@ -64,7 +64,7 @@ class MailerService
     ) {
         $mail = \Swift_Message::newInstance()
             ->setSubject($subject)
-            ->setFrom('no-reply-musee@aurelien-morvan.fr')
+            ->setFrom('contact@aurelien-morvan.fr')
             ->setTo('musee@aurelien-morvan.fr', 'Musee du Louvre')
             ->setBody(
                 $this->templating->render(
@@ -94,14 +94,16 @@ class MailerService
      */
     public function automaticReplyContactForm($emailSender, $sender, $subject, $templateMail)
     {
-        $mail = \Swift_Message::newInstance()
+        $mail = \Swift_Message::newInstance();
+        $mail
             ->setSubject('Confirmation de réception')
-            ->setFrom('no-reply-musee@aurelien-morvan.fr')
+            ->setFrom('contact@aurelien-morvan.fr')
             ->setTo($emailSender)
             ->setBody(
                 $this->templating->render(
                     $templateMail,
                     [
+                        'image' => \Swift_Image::fromPath('http://musee.aurelien-morvan.fr/images/logo.png'),
                         'sender' => $sender,
                         'subject' => $subject,
                     ]
