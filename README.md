@@ -109,7 +109,9 @@ Le mail doit indiquer:
 
 **3. Affichage d'un message de nombres de billets restants insuffisants** 
 - Choisir la date du 14 juillet 2017 en choisissant un nombre de billets supérieur à 4**
+
 ## Exemple de billet reçu par mail
+
 **1. Effectuer un parcours de réservation**
 
 **2. Sur la page "/order", indiquer l'adresse mail "aurelien.morvan@dartybox.com", "john@doe.com", "jane@doe.com"**
