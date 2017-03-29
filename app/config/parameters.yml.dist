@@ -21,7 +21,6 @@ parameters:
 
     adress_contact: ~
     name_contact: ~
-    email_test_form: ~
 
     stripe.token: ~
     stripe.pub_key: pk_test_EGNkN8Ku2kyEjvFRhyQjzuDC
