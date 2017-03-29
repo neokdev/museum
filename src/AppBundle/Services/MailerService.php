@@ -64,7 +64,7 @@ class MailerService
     ) {
         $mail = \Swift_Message::newInstance()
             ->setSubject($subject)
-            ->setFrom($emailSender, $senderName)
+            ->setFrom($this->emailMuseum, $this->nameEmailMuseum)
             ->setTo($this->emailMuseum, $this->nameEmailMuseum)
             ->setBody(
                 $this->templating->render(
