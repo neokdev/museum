@@ -9,7 +9,7 @@ AppBundle\Entity\Order:
         valid: true
         dateOrder: "2017-01-01"
     order2:
-        dateVisit: "2017-03-28"
+        dateVisit: "2017-03-29"
         typeTicket: "Journée"
         email: "jane@doe.com"
         orderNumber: "<ean13()>"
