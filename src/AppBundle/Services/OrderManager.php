@@ -97,14 +97,18 @@ class OrderManager
                     );
                 }
 
-                if ($datas->getTypeTicket() == 0) {
-                    if (!$this->isHalfDayPossible($datas->getDateVisit())) {
-                        throw new \Exception(
-                            sprintf(
-                                'Vous ne pouvez plus réserver votre billet pour la journée complète car il est 14h00 passé'
-                            )
-                        );
-                    }
+                if (!$this->isClosedForCurrentDay($datas->getDateVisit())) {
+                    throw new \Exception(
+                        sprintf('Vous ne pouvez réserver un billet alors que le musée est fermé')
+                    );
+                }
+
+                if ($datas->getTypeTicket() == 0 && !$this->isHalfDayPossible($datas->getDateVisit())) {
+                    throw new \Exception(
+                        sprintf(
+                            'Vous ne pouvez plus réserver votre billet pour la journée complète car il est 14h00 passé'
+                        )
+                    );
                 }
 
                 while ($numberTickets > 0) {
@@ -396,6 +400,41 @@ class OrderManager
     }
 
     /**
+     * Checks if the museum is still open at the time of booking
+     *
+     * @param \DateTime $date
+     *
+     * @return bool
+     */
+    private function isClosedForCurrentDay(\DateTime $date)
+    {
+        $actualDate = new \DateTime();
+        $currentDay = $date->format('D');
+
+        switch ($currentDay) {
+            case 'Mon':
+            case 'Thu':
+            case 'Sat':
+                if ($date->format('d-m-Y') == $actualDate->format('d-m-Y')) {
+                    if ($actualDate->format('G') > 18) {
+                        return false;
+                    }
+                }
+                break;
+            case 'Wed':
+            case 'Fri':
+                if ($date->format('d-m-Y') == $actualDate->format('d-m-Y')) {
+                    if ($actualDate->format('G') > 21) {
+                        return false;
+                    }
+                }
+                break;
+        }
+
+        return true;
+    }
+
+    /**
      * Check if half day booking is possible.
      *
      * @param \DateTime $date
@@ -409,7 +448,7 @@ class OrderManager
             return true;
         }
         if ($date->format('d-m-Y') == $actualDate->format('d-m-Y')) {
-            if ($actualDate->format('h') > 14) {
+            if ($actualDate->format('G') > 14) {
                 return false;
             }
         }
