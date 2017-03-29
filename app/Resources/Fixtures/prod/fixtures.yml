@@ -20,7 +20,7 @@ AppBundle\Entity\Order:
     order3:
         dateVisit: "2017-06-19"
         typeTicket: "Journée"
-        email: "%email_test_form%"
+        email: "morvan.aurelien@gmail.com"
         orderNumber: "<ean13()>"
         numberTickets: "1"
         totalPrice: "16"
