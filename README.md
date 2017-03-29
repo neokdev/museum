@@ -69,7 +69,9 @@ Le mail doit indiquer:
     - Debian 8
     - Apache 2.4
     - Postgres 9.5
+    
 ## Installation du projet
+
 **1. Clone du projet**  
 `git clone git@gitlab.com:morvan.aurelien/museum.git`  
 
