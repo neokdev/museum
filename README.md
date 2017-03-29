@@ -58,3 +58,56 @@ Le mail doit indiquer:
 # Présentation technique du projet
 ## Modèles de données
 ![Modèle de données](/docs/museum_model.png)
+## Architecture projet
+- Back:
+    - PHP
+    - Symfony 3.2
+- Front:
+    - Moteur template twig
+    - Bootstrap
+- Architecture serveur:
+    - Debian 8
+    - Apache 2.4
+    - Postgres 9.5
+## Installation du projet
+**1. Clone du projet**  
+`git clone git@gitlab.com:morvan.aurelien/museum.git`  
+
+**2. Dossier du projet**    
+`cd museum`  
+
+**3. Installation des dépendances**  
+`composer install`  
+
+**4. Renseigner les informations du parameters file**  
+- **database_driver:** Driver base de donnée
+- **database_host:** Host de la base de donnée
+- **database_port:** Port de la base de donnée
+- **database_name:** Nom souhaité pour la base de donnée
+- **database_user:** Utilisateur avec des droits d'accès pour la base de donnée
+- **database_password:** Mot de passe de l'utilisateur
+- **mailer_transport:** Par défaut *smtp*
+- **mailer_host:** Host du mailer, laisser par défaut si utilisation de postfix
+- **mailer_user:** User du mailer, laisser par défaut si utilisation de postfix
+- **mailer_password:** Password de l'utilisateur du mailer, laisser par défaut si utilisation de postfix
+- **adress_contact:** Adresse du musée pour les mails, par défaut *musee@aurelien-morvan.fr*
+- **name_contact:** Nom de contact du musée pour les mails, par défaut *Musée du Louvre*
+- **stripe.token:** Clé API privée du compte Stripe.
+- **stripe.pub_key:** Clé API public du compte Stripe.
+
+**5. Chargement des fixtures de déploiement pour la démonstration**  
+`php bin/console d:f:l -n`  
+
+## Cas d'erreur pour la démonstration
+**1. Affichage du message d'alert pour le jour courant si billets restants inférieur à 100 billets**
+- Paramétrer lors du chargement des fixtures.
+
+**2. Affichage d'un message d'erreur sur un jour fermé**  
+- Choisir Mardi, Dimanche, 1er Mai, 1 novembre ou 25 Décembre
+
+**3. Affichage d'un message de nombres de billets restants insuffisants** 
+- Choisir la date du 14 juillet 2017 en choisissant un nombre de billets supérieur à 4**
+## Exemple de billet reçu par mail
+**1. Effectuer un parcours de réservation**
+
+**2. Sur la page "/order", indiquer l'adresse mail "aurelien.morvan@dartybox.com", "john@doe.com", "jane@doe.com"**
