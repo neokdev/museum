@@ -1,17 +1,13 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/service_container.html
-parameters:
-    recipient_adress: '%adress_contact%'
-    recipient_name: '%name_contact%'
-
 services:
 # Service Mailer
     app.mailer_service:
         class: AppBundle\Services\MailerService
         arguments:
             - '@mailer'
-            - '%recipient_adress%'
-            - '%recipient_name%'
+            - '%adress_contact%'
+            - '%name_contact%'
             - '@templating'
 # Service Contact
     app.contact_service:
