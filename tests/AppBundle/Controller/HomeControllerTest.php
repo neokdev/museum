@@ -104,7 +104,7 @@ class HomeControllerTest extends WebTestCase
         $form['order[typeTicket]']->select(0);
         $form['order[numberTickets]']->select('1');
 
-//        $this->session->set('order', $form);
+        $this->session->set('order', $form);
 
         $crawler = $client->submit($form);
         static::assertTrue($client->getResponse()->isSuccessful());
