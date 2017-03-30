@@ -65,7 +65,7 @@ class MailerService
         $mail = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setFrom('musee@aurelien-morvan.fr')
-            ->setTo('morvan.aurelien@gmail.com', $this->nameEmailMuseum)
+            ->setTo('musee@aurelien-morvan.fr', $this->nameEmailMuseum)
             ->setBody(
                 $this->templating->render(
                     $templateMail,
