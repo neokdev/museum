@@ -73,8 +73,8 @@ class MailerService
         $mail = \Swift_Message::newInstance();
         $mail
             ->setSubject($subject)
-            ->setFrom('musee@aurelien-morvan.fr')
-            ->setTo('contact@aurelien-morvan.fr', $this->nameEmailMuseum)
+            ->setFrom($emailSender, $senderName)
+            ->setTo($this->emailMuseum, $this->nameEmailMuseum)
             ->setBody(
                 $this->templating->render(
                     $templateMail,
@@ -106,7 +106,7 @@ class MailerService
         $mail = \Swift_Message::newInstance();
         $mail
             ->setSubject('Confirmation de réception')
-            ->setFrom('contact@aurelien-morvan.fr')
+            ->setFrom($this->emailMuseum, $this->nameEmailMuseum)
             ->setTo($emailSender)
             ->setBody(
                 $this->templating->render(
