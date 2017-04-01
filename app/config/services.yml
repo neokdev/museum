@@ -9,6 +9,7 @@ services:
             - '%adress_contact%'
             - '%name_contact%'
             - '@templating'
+            - '%webdir%'
 # Service Contact
     app.contact_service:
         class: AppBundle\Services\ContactService

@@ -27,23 +27,31 @@ class MailerService
     private $templating;
 
     /**
+     * @var string
+     */
+    private $webDir;
+
+    /**
      * MailerService constructor.
      *
      * @param \Swift_Mailer $mailer          Service Swift mailer
      * @param string        $emailMuseum     Email of museum
      * @param string        $nameEmailMuseum Name for email of museum
      * @param TwigEngine    $templating      Service twig engine
+     * @param string        $webDir          Web directory for images
      */
     public function __construct(
         \Swift_Mailer $mailer,
         $emailMuseum,
         $nameEmailMuseum,
-        TwigEngine $templating
+        TwigEngine $templating,
+        $webDir
     ) {
         $this->mailer = $mailer;
         $this->emailMuseum = $emailMuseum;
         $this->nameEmailMuseum = $nameEmailMuseum;
         $this->templating = $templating;
+        $this->webDir = $webDir;
     }
 
     /**
@@ -62,7 +70,8 @@ class MailerService
         $senderName,
         $emailSender
     ) {
-        $mail = \Swift_Message::newInstance()
+        $mail = \Swift_Message::newInstance();
+        $mail
             ->setSubject($subject)
             ->setFrom('musee@aurelien-morvan.fr')
             ->setTo('contact@aurelien-morvan.fr', $this->nameEmailMuseum)
@@ -103,7 +112,7 @@ class MailerService
                 $this->templating->render(
                     $templateMail,
                     [
-                        'image' => \Swift_Image::fromPath('http://musee.aurelien-morvan.fr/images/logo.png'),
+                        'image' => $mail->embed(\Swift_Image::fromPath($this->webDir.'images/logo.png')),
                         'sender' => $sender,
                         'subject' => $subject,
                     ]
@@ -122,7 +131,8 @@ class MailerService
      */
     public function sendTickets($subject, $emailRecipient, $templateMail, Order $order)
     {
-        $mail = \Swift_Message::newInstance()
+        $mail = \Swift_Message::newInstance();
+        $mail
             ->setSubject($subject)
             ->setFrom($this->emailMuseum, $this->nameEmailMuseum)
             ->setTo($emailRecipient)
@@ -130,6 +140,7 @@ class MailerService
                 $this->templating->render(
                     $templateMail,
                     [
+                        'image' => $mail->embed(\Swift_Image::fromPath($this->webDir.'images/logo.png')),
                         'order' => $order,
                     ]
                 ),

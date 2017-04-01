@@ -1,11 +1,21 @@
-{% extends 'base_email.html.twig' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}{% endblock %}</title>
+    {% block stylesheets %}
+        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet"/>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
+    {% endblock %}
+</head>
 
-{% block title %}{% endblock %}
-
-{% block body %}
-    Musée du Louvres       <img src="{{ image }}" alt="Image"/> <br/>
+<body>
+<div class="container">
+    Musée du Louvres <img src="{{ image }}" alt="Image"/> <br/>
     Cher futur visiteur,<br/>
-    Nous vous confirmons la bonne réception de votre commande et vous trouverez ci-dessous toutes les informations vous permettant d’accéder au Musée du Louvre.
+    Nous vous confirmons la bonne réception de votre commande et vous trouverez ci-dessous toutes les informations vous
+    permettant d’accéder au Musée du Louvre.
     <br/>
     <p>
         Garder précieusement ce mail et pensez à l’imprimer car il vous sera demandé à l’entrée du Musée.
@@ -17,18 +27,20 @@
     </p>
     <p>
         {% for ticket in order.tickets %}
-            <u>Prénom visiteur :</u> {{ ticket.firstname }} <br/>
-            <u>Nom visiteur :</u> {{ ticket.lastname }}<br/>
+        <u>Prénom visiteur :</u> {{ ticket.firstname }} <br/>
+        <u>Nom visiteur :</u> {{ ticket.lastname }}<br/>
             {% if ticket.price == 10 %}
-                <p class="text-info">
-                    'N\'oubliez pas d\'apporter le justificatif pour votre tarif réduit.'
-                </p>
+    <p class="text-info">
+        'N\'oubliez pas d\'apporter le justificatif pour votre tarif réduit.'
+    </p>
             {% endif %}
         {% endfor %}
     </p>
     <p>
-    En vous souhaitant une très bonne visite,<br/>
-    L’équipe du Musée du Louvre<br/>
+        En vous souhaitant une très bonne visite,<br/>
+        L’équipe du Musée du Louvre<br/>
     </p>
+</div>
+</body>
+</html>
 
-{% endblock %}
