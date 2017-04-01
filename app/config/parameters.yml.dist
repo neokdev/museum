@@ -19,7 +19,8 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    adress_contact: musee@aurelien-morvan.fr
+    mail_contact_museum: musee@aurelien-morvan.fr
+    mail_send_mail_museum: musee.louvre.amorvan@gmail.com
     name_contact: 'Musée du Louvre'
 
     stripe.token: ~

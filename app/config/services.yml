@@ -6,7 +6,7 @@ services:
         class: AppBundle\Services\MailerService
         arguments:
             - '@mailer'
-            - '%adress_contact%'
+            - '%mail_send_mail_museum%'
             - '%name_contact%'
             - '@templating'
             - '%webdir%'
