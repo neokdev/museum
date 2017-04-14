@@ -20,6 +20,8 @@ class HomeController extends Controller
      *
      * @Route("/", name="homepage")
      *
+     * @Method({"GET", "POST"})
+     *
      * @return Response Return an http response
      */
     public function indexAction(Request $request)
@@ -35,6 +37,8 @@ class HomeController extends Controller
      * @param Request $request
      *
      * @Route("/order", name="order")
+     *
+     * @Method({"GET", "POST"})
      *
      * @return Response
      */
@@ -56,6 +60,8 @@ class HomeController extends Controller
      *
      * @Route("/ticket", name="ticket")
      *
+     * @Method({"GET", "POST"})
+     *
      * @return Response
      */
     public function registerTicketAction(Request $request)
@@ -71,7 +77,8 @@ class HomeController extends Controller
      * @param Request $request
      *
      * @Route("/summary", name="summary")
-     * @Method("GET")
+     *
+     * @Method({"GET", "POST"})
      *
      * @return Response
      */
@@ -88,6 +95,8 @@ class HomeController extends Controller
 
     /**
      * @Route("/confirm", name="confirm")
+     *
+     * @Method({"GET", "POST"})
      *
      * @return Response
      */
