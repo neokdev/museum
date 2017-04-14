@@ -1,5 +1,6 @@
 # Build CI
 [![build status](https://gitlab.com/morvan.aurelien/museum/badges/_dev/build.svg)](https://gitlab.com/morvan.aurelien/museum/commits/_dev)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/02fd68ef-afeb-4a1c-bcbd-e4e794b8abd5/big.png)](https://insight.sensiolabs.com/projects/02fd68ef-afeb-4a1c-bcbd-e4e794b8abd5)
 
 # Enoncé
 
