@@ -114,4 +114,4 @@ Le mail doit indiquer:
 
 **1. Effectuer un parcours de réservation**
 
-**2. Sur la page "/order", indiquer l'adresse mail "aurelien.morvan@dartybox.com", "john@doe.com", "jane@doe.com"**
+**2. Sur la page "/order", indiquer l'adresse mail "morvan.aurelien@gmail.com", "john@doe.com", "jane@doe.com"**
