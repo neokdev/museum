@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,6 +71,7 @@ class HomeController extends Controller
      * @param Request $request
      *
      * @Route("/summary", name="summary")
+     * @Method("GET")
      *
      * @return Response
      */
