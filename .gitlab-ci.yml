@@ -23,7 +23,7 @@ test:
        - php bin/console --env=test d:s:u --force
     script:
        - echo "Functionnal & Unit tests"
-       - phpunit -v
+       - vendor/bin/phpunit -v
     after_script:
         - git checkout master
         - git merge _dev
