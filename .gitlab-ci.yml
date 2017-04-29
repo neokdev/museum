@@ -34,7 +34,7 @@ server_config:
         - echo 'server configuration in progress'
         - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$PROJECT_ENV"
         - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/www/$PROJECT_NAME/$PROJECT_ENV"
-        - ssh $server_user@$server_host "ln -s -f /home/$SERVER_OWNER/www/$PROJECT_NAME/$PROJECT_ENV /var/www/html/$PROJECT_NAME/$PROJECT_ENV"
+        - ssh $server_user@$server_host "ln -s -f /home/$SERVER_OWNER/www/$PROJECT_NAME/$PROJECT_ENV/ /var/www/html/$PROJECT_NAME"
         - ssh $server_user@$server_host "chown -hR $SERVER_OWNER:users /home/$SERVER_OWNER/www/$PROJECT_NAME/$PROJECT_ENV && chmod -R 777 /home/$SERVER_OWNER/www/$PROJECT_NAME/$PROJECT_ENV"
         - echo 'Projet folder created and configured'
         - scp -r /etc/apache2/sites-available/$PROJECT_NAME-$PROJECT_ENV.conf $server_user@$server_host:/etc/apache2/sites-available/$PROJECT_NAME-$PROJECT_ENVIRONMENT.conf
