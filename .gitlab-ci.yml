@@ -30,7 +30,7 @@ server_config:
     image: amorvan/env_test
     only:
         - master
-    before_script:
+    script:
         - echo 'server configuration in progress'
         - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/www/$PROJECT_NAME"
         - ssh $server_user@$server_host "ln -s -f /home/$SERVER_OWNER/www/$PROJECT_NAME /var/www/$PROJECT_NAME"
