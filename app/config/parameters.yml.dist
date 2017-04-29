@@ -4,7 +4,7 @@
 parameters:
     database_driver:   pdo_pgsql
     database_host:     127.0.0.1
-    database_port:     ~
+    database_port:     5432
     database_name:     ~
     database_user:     ~
     database_password: ~
@@ -17,7 +17,7 @@ parameters:
     mailer_password:   ~
 
     # A secret key that's used to generate certain security-related tokens
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    secret:            9wLF9RFVwVPInlYPi;0(lquG4y}FFf}UtrGi6!-El`KGbc1oGGsRGU;p(yRiRb!
 
     mail_contact_museum: musee@aurelien-morvan.fr
     mail_send_mail_museum: musee.louvre.amorvan@gmail.com
