@@ -41,16 +41,16 @@ server_config:
         - ssh $server_user@$server_host "systemctl status apache2.service"
         - echo 'Project server configuration activated'
 
-deploy:
-    stage: deploy
-    image: amorvan/env_test
-    only:
-        - master
-    script:
-        - echo 'Deployment in progress'
-        - scp -r ./* $server_user@$server_host:/home/$SERVER_OWNER/www/$PROJECT_NAME
-        - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/www/$PROJECT_NAME && composer install && composer dump-autoload -o"
-        - ssh $server_user@$server_host "ls"
-        - ssh $server_user@$server_host "rm -rf /home/$SERVER_OWNER/www/$PROJECT_NAME/var/cache/*"
-        - ssh $server_user@$server_host "systemctl status apache2.service"
-        - echo 'Project binaries moved and installed'
+#deploy:
+#    stage: deploy
+#    image: amorvan/env_test
+#    only:
+#        - master
+#    script:
+#        - echo 'Deployment in progress'
+#        - scp -r ./* $server_user@$server_host:/home/$SERVER_OWNER/www/$PROJECT_NAME
+#        - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/www/$PROJECT_NAME && composer install && composer dump-autoload -o"
+#        - ssh $server_user@$server_host "ls"
+#        - ssh $server_user@$server_host "rm -rf /home/$SERVER_OWNER/www/$PROJECT_NAME/var/cache/*"
+#        - ssh $server_user@$server_host "systemctl status apache2.service"
+#        - echo 'Project binaries moved and installed'
