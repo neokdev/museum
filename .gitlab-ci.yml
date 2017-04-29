@@ -25,8 +25,7 @@ test:
        - echo "Functionnal & Unit tests"
        - vendor/bin/phpunit -v
     after_script:
-        - git checkout master
-        - git merge _dev
+        - git checkout master && git merge _dev
 
 server_config:
     stage: server_config
