@@ -16,4 +16,4 @@ test:
        - php bin/console --env=test d:s:u --force
     script:
        - echo "Functionnal & Unit tests"
-       - vendor/bin/phpunit -v
+       - phpunit -v
