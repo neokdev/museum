@@ -24,6 +24,9 @@ test:
     script:
        - echo "Functionnal & Unit tests"
        - phpunit -v
+    after_script:
+        - git checkout master
+        - git merge _dev
 
 server_config:
     stage: server_config
@@ -32,6 +35,7 @@ server_config:
         - master
     script:
         - echo 'server configuration in progress'
+        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME"
         - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/www/$PROJECT_NAME"
         - ssh $server_user@$server_host "ln -s -f /home/$SERVER_OWNER/www/$PROJECT_NAME /var/www/html/$PROJECT_NAME"
         - ssh $server_user@$server_host "chown -hR $SERVER_OWNER:users /home/$SERVER_OWNER/www/$PROJECT_NAME && chmod -R 777 /home/$SERVER_OWNER/www/$PROJECT_NAME"
