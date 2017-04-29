@@ -24,8 +24,6 @@ test:
     script:
        - echo "Functionnal & Unit tests"
        - vendor/bin/phpunit -v
-    after_script:
-        - git checkout master && git merge origin/_dev && git push origin
 
 server_config:
     stage: server_config
