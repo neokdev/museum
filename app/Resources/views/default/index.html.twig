@@ -4,6 +4,7 @@
 
 {% block body %}
     {% if app.session.flashBag.has('success') %}
+        <p>Yolo l'intégration continue</p>
         <div class="row">
             <div class="col-xs-12 alert alert-success text-center">
                 {{ app.session.flashBag.get('success')[0] }}
