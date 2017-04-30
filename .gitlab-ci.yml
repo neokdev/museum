@@ -30,6 +30,10 @@ test:
         - echo "Functionnal & Unit tests"
         - vendor/bin/phpunit -v
 
+######################################################################################################
+############################### DEPLOY DEVELOPMENT ENVIRONMENT #######################################
+######################################################################################################
+
 # CONFIG SERVER TO PREPARE DEPLOY ON DEVELOPMENT ENVIRONMENT
 server_config_dev:
     stage: server_config_dev
@@ -46,6 +50,38 @@ server_config_dev:
         - ssh $server_user@$server_host "a2ensite $PROJECT_NAME-$ENV_DEV.conf && a2enmod ssl && service apache2 restart"
         - ssh $server_user@$server_host "systemctl status apache2.service"
         - echo 'Project server configuration activated'
+# DEPLOY BINARIES FILE ON DEVELOPMENT ENVIRONMENT
+deploy_dev:
+    stage: deploy_dev
+    image: amorvan/env_test
+    only:
+        - _dev
+    script:
+        - echo 'Deployment in progress'
+        - scp -r ./* $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN
+        - echo 'Install vendor'
+        - ssh $server_user@$server_host "cd /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN && composer install && composer dump-autoload -o"
+        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/web/app_dev.php"
+        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/var/cache/*"
+        - echo 'Project $PROJECT_NAME $ENV_DEV binaries moved and installed'
+# DEPLOY BINARIES FILE ON PRODUCTION ENVIRONMENT
+deploy_prod:
+    stage: deploy_prod
+    image: amorvan/env_test
+    only:
+        - master
+    script:
+        - echo 'Deployment in progress'
+        - scp -r ./* $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN
+        - echo 'Install vendor'
+        - ssh $server_user@$server_host "cd /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN && composer install && composer dump-autoload -o"
+        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/web/app_dev.php"
+        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/var/cache/*"
+        - echo 'Project $PROJECT_NAME $ENV_PROD binaries moved and installed'
+
+######################################################################################################
+############################### CONFIG PRODUCTION ENVIRONMENT ########################################
+######################################################################################################
 
 # CONFIG SERVER TO PREPARE DEPLOY ON PRODUCTION ENVIRONMENT
 server_config_prod:
@@ -63,36 +99,6 @@ server_config_prod:
         - ssh $server_user@$server_host "a2ensite $PROJECT_NAME-$ENV_PROD.conf && a2enmod ssl && service apache2 restart"
         - ssh $server_user@$server_host "systemctl status apache2.service"
         - echo 'Project server configuration activated'
-
-# DEPLOY BINARIES FILE ON DEVELOPMENT ENVIRONMENT
-deploy_dev:
-    stage: deploy_dev
-    image: amorvan/env_test
-    only:
-        - _dev
-    script:
-        - echo 'Deployment in progress'
-        - scp -r ./* $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN
-        - echo 'Install vendor'
-        - ssh $server_user@$server_host "cd /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN && composer install && composer dump-autoload -o"
-        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/web/app_dev.php"
-        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/var/cache/*"
-        - echo 'Project $PROJECT_NAME $ENV_DEV binaries moved and installed'
-
-# DEPLOY BINARIES FILE ON PRODUCTION ENVIRONMENT
-deploy_dev:
-    stage: deploy_prod
-    image: amorvan/env_test
-    only:
-        - master
-    script:
-        - echo 'Deployment in progress'
-        - scp -r ./* $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN
-        - echo 'Install vendor'
-        - ssh $server_user@$server_host "cd /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN && composer install && composer dump-autoload -o"
-        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/web/app_dev.php"
-        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/var/cache/*"
-        - echo 'Project $PROJECT_NAME $ENV_PROD binaries moved and installed'
 
 # CONFIG PROJECT ON DEVELOPMENT ENVIRONMENT INTO DEVELOPMENT SERVER
 project_config_dev:
