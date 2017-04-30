@@ -64,20 +64,22 @@ deploy_dev:
         - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/web/app_dev.php"
         - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/var/cache/*"
         - echo 'Project $PROJECT_NAME $ENV_DEV binaries moved and installed'
-# DEPLOY BINARIES FILE ON PRODUCTION ENVIRONMENT
-deploy_prod:
-    stage: deploy_prod
-    image: amorvan/env_test
+
+# CONFIG PROJECT ON DEVELOPMENT ENVIRONMENT INTO DEVELOPMENT SERVER
+project_config_dev:
+    stage: project_config_dev
+    image: amorvan/manage_server
     only:
-        - master
+        - _dev
     script:
-        - echo 'Deployment in progress'
-        - scp -r ./* $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN
-        - echo 'Install vendor'
-        - ssh $server_user@$server_host "cd /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN && composer install && composer dump-autoload -o"
-        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/web/app_dev.php"
-        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/var/cache/*"
-        - echo 'Project $PROJECT_NAME $ENV_PROD binaries moved and installed'
+        - echo 'project configuration in progress'
+        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/app/config/parameters.yml"
+        - scp -r /home/parameters_files/$PROJECT_NAME/$ENV_DEV.$DOMAIN/parameters.yml $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/app/config/parameters.yml
+        - ssh $server_user@$server_host "rm -rf /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN"
+        - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN"
+        - scp -r /home/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh $server_user@$server_host:/home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh
+        - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN && chmod +x deploy-$PROJECT_NAME-$ENV_DEV.sh && ./deploy-$PROJECT_NAME-$ENV_DEV.sh"
+        - echo 'Project $PROJECT_NAME $ENV_DEV has been configured'
 
 ######################################################################################################
 ############################### CONFIG PRODUCTION ENVIRONMENT ########################################
@@ -100,21 +102,20 @@ server_config_prod:
         - ssh $server_user@$server_host "systemctl status apache2.service"
         - echo 'Project server configuration activated'
 
-# CONFIG PROJECT ON DEVELOPMENT ENVIRONMENT INTO DEVELOPMENT SERVER
-project_config_dev:
-    stage: project_config_dev
-    image: amorvan/manage_server
+# DEPLOY BINARIES FILE ON PRODUCTION ENVIRONMENT
+deploy_prod:
+    stage: deploy_prod
+    image: amorvan/env_test
     only:
-        - _dev
+        - master
     script:
-        - echo 'project configuration in progress'
-        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/app/config/parameters.yml"
-        - scp -r /home/parameters_files/$PROJECT_NAME/$ENV_DEV.$DOMAIN/parameters.yml $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/app/config/parameters.yml
-        - ssh $server_user@$server_host "rm -rf /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN"
-        - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN"
-        - scp -r /home/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh $server_user@$server_host:/home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh
-        - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN && chmod +x deploy-$PROJECT_NAME-$ENV_DEV.sh && ./deploy-$PROJECT_NAME-$ENV_DEV.sh"
-        - echo 'Project $PROJECT_NAME $ENV_DEV has been configured'
+        - echo 'Deployment in progress'
+        - scp -r ./* $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN
+        - echo 'Install vendor'
+        - ssh $server_user@$server_host "cd /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN && composer install && composer dump-autoload -o"
+        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/web/app_dev.php"
+        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/var/cache/*"
+        - echo 'Project $PROJECT_NAME $ENV_PROD binaries moved and installed'
 
 # CONFIG PROJECT ON PRODUCTION ENVIRONMENT INTO PRODUCTION SERVER
 project_config_dev:
