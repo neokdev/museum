@@ -63,8 +63,8 @@ project_config_dev:
         - echo 'project configuration in progress'
         - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/app/config/parameters.yml"
         - scp -r /home/parameters_files/$PROJECT_NAME/$ENV_DEV.$DOMAIN/parameters.yml $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/app/config/parameters.yml
-        - ssh $server_user@$server_host "rm -rf /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$PROJECT_ENV.$DOMAIN"
-        - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$PROJECT_ENV.$DOMAIN"
+        - ssh $server_user@$server_host "rm -rf /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN"
+        - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN"
         - scp -r /home/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh $server_user@$server_host:/home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh
         - ssh $server_user&$server_host "cd /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN && chmod +x deploy-$PROJECT_NAME-$ENV_DEV.sh && ./deploy-$PROJECT_NAME-$ENV_DEV.sh"
         - echo 'Project $PROJECT_NAME $ENV_DEV has been configured'
