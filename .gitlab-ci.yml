@@ -14,6 +14,7 @@ before_script:
     - ssh-add <(echo "$SERVER_PRIVATE_KEY")
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
+# RUN UNIT TEST & FUNCTIONNALS TESTS ON DEVELOPMENT BRANCH
 test:
     stage: test
     image: amorvan/env_test
@@ -29,7 +30,8 @@ test:
         - echo "Functionnal & Unit tests"
         - vendor/bin/phpunit -v
 
-server_config:
+# CONFIG SERVER TO PREPARE DEPLOY ON DEVELOPMENT ENVIRONMENT
+server_config_dev:
     stage: server_config_dev
     image: amorvan/manage_server
     only:
@@ -45,6 +47,8 @@ server_config:
         - ssh $server_user@$server_host "systemctl status apache2.service"
         - echo 'Project server configuration activated'
 
+# CONFIG SERVER TO PREPARE DEPLOY ON PRODUCTION ENVIRONMENT
+server_config_prod:
     stage: server_config_prod
     image: amorvan/manage_server
     only:
@@ -60,7 +64,8 @@ server_config:
         - ssh $server_user@$server_host "systemctl status apache2.service"
         - echo 'Project server configuration activated'
 
-deploy:
+# DEPLOY BINARIES FILE ON DEVELOPMENT ENVIRONMENT
+deploy_dev:
     stage: deploy_dev
     image: amorvan/env_test
     only:
@@ -74,6 +79,8 @@ deploy:
         - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/var/cache/*"
         - echo 'Project $PROJECT_NAME $ENV_DEV binaries moved and installed'
 
+# DEPLOY BINARIES FILE ON PRODUCTION ENVIRONMENT
+deploy_dev:
     stage: deploy_prod
     image: amorvan/env_test
     only:
@@ -87,7 +94,8 @@ deploy:
         - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/var/cache/*"
         - echo 'Project $PROJECT_NAME $ENV_PROD binaries moved and installed'
 
-project_config:
+# CONFIG PROJECT ON DEVELOPMENT ENVIRONMENT INTO DEVELOPMENT SERVER
+project_config_dev:
     stage: project_config_dev
     image: amorvan/manage_server
     only:
@@ -102,6 +110,8 @@ project_config:
         - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN && chmod +x deploy-$PROJECT_NAME-$ENV_DEV.sh && ./deploy-$PROJECT_NAME-$ENV_DEV.sh"
         - echo 'Project $PROJECT_NAME $ENV_DEV has been configured'
 
+# CONFIG PROJECT ON PRODUCTION ENVIRONMENT INTO PRODUCTION SERVER
+project_config_dev:
     stage: project_config_prod
     image: amorvan/manage_server
     only:
