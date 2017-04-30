@@ -50,6 +50,7 @@ deploy_dev:
     script:
         - echo 'Deployment in progress'
         - scp -r ./* $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN
+        - echo 'Install vendor'
         - ssh $server_user@$server_host "cd /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN && composer install && composer dump-autoload -o"
         - ssh $server_user@$serveR_host "rm /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/web/app_dev.php && rm /var/www/html/$PROJET_NAME/$ENV_DEV.$DOMAIN/web/config.php
         - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/var/cache/*"
