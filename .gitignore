@@ -13,8 +13,5 @@
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
 /vendor/
-<<<<<<< HEAD
 /web/bundles/
-=======
-/web/bundles/
->>>>>>> master
+
