@@ -19,7 +19,7 @@ test:
     stage: test
     image: amorvan/env_test
     only:
-        _ development
+        - development
     before_script:
         - php -v
         - composer install
