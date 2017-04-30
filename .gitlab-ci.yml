@@ -1,7 +1,8 @@
 stages:
     - test
-    - server_config
-    - deploy
+    - server_config_dev
+    - deploy_dev
+    - project_config_dev
 
 before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
@@ -14,44 +15,56 @@ test:
     stage: test
     image: amorvan/env_test
     only:
-       - _dev
+        - _dev
     before_script:
-       - php -v
-       - composer install
-       - composer dump-autoload -o
-       - php bin/console --env=test d:d:c
-       - php bin/console --env=test d:s:u --force
+        - php -v
+        - composer install
+        - composer dump-autoload -o
+        - php bin/console --env=test d:d:c
+        - php bin/console --env=test d:s:u --force
     script:
-       - echo "Functionnal & Unit tests"
-       - vendor/bin/phpunit -v
+        - echo "Functionnal & Unit tests"
+        - vendor/bin/phpunit -v
 
-server_config:
-    stage: server_config
-    image: amorvan/env_test
+server_config_dev:
+    stage: server_config_dev
+    image: amorvan/manage_server
     only:
-        - master
+        - _dev
     script:
         - echo 'server configuration in progress'
-        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME"
-        - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/www/$PROJECT_NAME"
-        - ssh $server_user@$server_host "ln -s -f /home/$SERVER_OWNER/www/$PROJECT_NAME /var/www/html/$PROJECT_NAME"
-        - ssh $server_user@$server_host "chown -hR $SERVER_OWNER:users /home/$SERVER_OWNER/www/$PROJECT_NAME && chmod -R 777 /home/$SERVER_OWNER/www/$PROJECT_NAME"
+        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN"
+        - ssh $server_user@$server_host "mkdir -p /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN"
+        - ssh $server_user@$server_host "chown -hR $SERVER_OWNER:users /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN && chmod -R 777 /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN"
         - echo 'Projet folder created and configured'
-        - scp -r /etc/apache2/sites-available/$PROJECT_NAME.conf $server_user@$server_host:/etc/apache2/sites-available/$PROJECT_NAME.conf
-        - ssh $server_user@$server_host "a2ensite $PROJECT_NAME.conf && a2enmod ssl && service apache2 restart"
+        - scp -r /home/vhosts/$PROJECT_NAME/$ENV_DEV.$DOMAIN/$PROJECT_NAME-$ENV_DEV.conf $server_user@$server_host:/etc/apache2/sites-available/$PROJECT_NAME-$ENV_DEV.conf
+        - ssh $server_user@$server_host "a2ensite $PROJECT_NAME-$ENV_DEV.conf && a2enmod ssl && service apache2 restart"
         - ssh $server_user@$server_host "systemctl status apache2.service"
         - echo 'Project server configuration activated'
 
-deploy:
-    stage: deploy
+deploy_dev:
+    stage: deploy_dev
     image: amorvan/env_test
     only:
-        - master
+        - _dev
     script:
         - echo 'Deployment in progress'
-        - scp -r ./* $server_user@$server_host:/home/$SERVER_OWNER/www/$PROJECT_NAME
-        - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/www/$PROJECT_NAME && composer install && composer dump-autoload -o"
-        - ssh $server_user@$server_host "ls"
-        - ssh $server_user@$server_host "rm -rf /home/$SERVER_OWNER/www/$PROJECT_NAME/var/cache/*"
-        - ssh $server_user@$server_host "systemctl status apache2.service"
-        - echo 'Project binaries moved and installed'
+        - scp -r ./* $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN
+        - ssh $server_user@$server_host "cd /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN && composer install && composer dump-autoload -o"
+        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/var/cache/*"
+        - echo 'Project $PROJECT_NAME $ENV_DEV binaries moved and installed'
+
+project_config_dev:
+    stage: project_config_dev
+    image: amorvan/manage_server
+    only:
+        - _dev
+    script:
+        - echo 'project configuration in progress'
+        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/app/config/parameters.yml"
+        - scp -r /home/paremeters_files/$PROJECT_NAME/$ENV_DEV.$DOMAIN/parameters.yml $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/app/config/parameters.yml
+        - ssh $server_user@server_host "rm -rf /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$PROJECT_ENV.$DOMAIN"
+        - ssh $server_user@server_host "mkdir -p /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$PROJECT_ENV.$DOMAIN"
+        - scp -r /home/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh $server_user@$server_host:/home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh
+        - ssh $server_user&$server_host "cd /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN && chmod +x deploy-$PROJECT_NAME-$ENV_DEV.sh && ./deploy-$PROJECT_NAME-$ENV_DEV.sh"
+        - echo 'Project $PROJECT_NAME $ENV_DEV has been configured'
