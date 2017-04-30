@@ -3,6 +3,9 @@ stages:
     - server_config_dev
     - deploy_dev
     - project_config_dev
+    - server_config_prod
+    - deploy_prod
+    - project_config_prod
 
 before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
