@@ -37,7 +37,7 @@ server_config_dev:
         - ssh $server_user@$server_host "mkdir -p /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN"
         - ssh $server_user@$server_host "chown -hR $SERVER_OWNER:users /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN && chmod -R 777 /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN"
         - echo 'Projet folder created and configured'
-        - scp -r /home/vhosts/$PROJECT_NAME/$ENV_DEV.$DOMAIN/$PROJECT_NAME-$ENV_DEV.conf $server_user@$server_host:/etc/apache2/sites-available/$PROJECT_NAME-$ENV_DEV.conf
+        - scp -r /home/vhosts/$PROJECT_NAME/$ENV_DEV.$DOMAIN/$PROJECT_NAME-$ENV_DEV.conf $server_user@$server_host:/etc/apache2/sites-available/$PROJECT_NAME-$ENV_DEV.conf"
         - ssh $server_user@$server_host "a2ensite $PROJECT_NAME-$ENV_DEV.conf && a2enmod ssl && service apache2 restart"
         - ssh $server_user@$server_host "systemctl status apache2.service"
         - echo 'Project server configuration activated'
