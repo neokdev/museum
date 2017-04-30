@@ -55,7 +55,7 @@ deploy_dev:
     stage: deploy_dev
     image: amorvan/env_test
     only:
-        - _dev
+        - development
     script:
         - echo 'Deployment in progress'
         - scp -r ./* $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN
@@ -128,6 +128,6 @@ project_config_prod:
         - scp -r /home/parameters_files/$PROJECT_NAME/$ENV_PROD.$DOMAIN/parameters.yml $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/app/config/parameters.yml
         - ssh $server_user@$server_host "rm -rf /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN"
         - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN"
-        - scp -r /home/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN/deploy-$PROJECT_NAME-$ENV_PROD.sh $server_user@$server_host:/home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh
-        - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN && chmod +x deploy-$PROJECT_NAME-$ENV_DEV.sh && ./deploy-$PROJECT_NAME-$ENV_DEV.sh"
+        - scp -r /home/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN/deploy-$PROJECT_NAME-$ENV_PROD.sh $server_user@$server_host:/home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV-PROD.$DOMAIN/deploy-$PROJECT_NAME-$ENV-PROD.sh
+        - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN && chmod +x deploy-$PROJECT_NAME-$ENV-PROD.sh && ./deploy-$PROJECT_NAME-$ENV-PROD.sh"
         - echo 'Project $PROJECT_NAME $ENV_PROD has been configured'
