@@ -26,7 +26,7 @@ test:
         - echo "Functionnal & Unit tests"
         - vendor/bin/phpunit -v
 
-server_config_dev:
+server_config:
     stage: server_config_dev
     image: amorvan/manage_server
     only:
@@ -42,7 +42,22 @@ server_config_dev:
         - ssh $server_user@$server_host "systemctl status apache2.service"
         - echo 'Project server configuration activated'
 
-deploy_dev:
+    stage: server_config_prod
+    image: amorvan/manage_server
+    only:
+        - master
+    script:
+        - echo 'server configuration in progress'
+        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN"
+        - ssh $server_user@$server_host "mkdir -p /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN"
+        - ssh $server_user@$server_host "chown -hR $SERVER_OWNER:users /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN && chmod -R 777 /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN"
+        - echo 'Projet folder created and configured'
+        - scp -r /home/vhosts/$PROJECT_NAME/$ENV_PROD.$DOMAIN/$PROJECT_NAME-$ENV_PROD.conf $server_user@$server_host:/etc/apache2/sites-available/$PROJECT_NAME-$ENV_PROD.conf
+        - ssh $server_user@$server_host "a2ensite $PROJECT_NAME-$ENV_PROD.conf && a2enmod ssl && service apache2 restart"
+        - ssh $server_user@$server_host "systemctl status apache2.service"
+        - echo 'Project server configuration activated'
+
+deploy:
     stage: deploy_dev
     image: amorvan/env_test
     only:
@@ -56,7 +71,20 @@ deploy_dev:
         - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_DEV.$DOMAIN/var/cache/*"
         - echo 'Project $PROJECT_NAME $ENV_DEV binaries moved and installed'
 
-project_config_dev:
+    stage: deploy_prod
+    image: amorvan/env_test
+    only:
+        - master
+    script:
+        - echo 'Deployment in progress'
+        - scp -r ./* $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN
+        - echo 'Install vendor'
+        - ssh $server_user@$server_host "cd /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN && composer install && composer dump-autoload -o"
+        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/web/app_dev.php"
+        - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/var/cache/*"
+        - echo 'Project $PROJECT_NAME $ENV_PROD binaries moved and installed'
+
+project_config:
     stage: project_config_dev
     image: amorvan/manage_server
     only:
@@ -70,3 +98,17 @@ project_config_dev:
         - scp -r /home/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh $server_user@$server_host:/home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh
         - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN && chmod +x deploy-$PROJECT_NAME-$ENV_DEV.sh && ./deploy-$PROJECT_NAME-$ENV_DEV.sh"
         - echo 'Project $PROJECT_NAME $ENV_DEV has been configured'
+
+    stage: project_config_prod
+    image: amorvan/manage_server
+    only:
+        - master
+    script:
+        - echo 'project configuration in progress'
+        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/app/config/parameters.yml"
+        - scp -r /home/parameters_files/$PROJECT_NAME/$ENV_PROD.$DOMAIN/parameters.yml $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/app/config/parameters.yml
+        - ssh $server_user@$server_host "rm -rf /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN"
+        - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN"
+        - scp -r /home/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN/deploy-$PROJECT_NAME-$ENV_PROD.sh $server_user@$server_host:/home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_DEV.$DOMAIN/deploy-$PROJECT_NAME-$ENV_DEV.sh
+        - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN && chmod +x deploy-$PROJECT_NAME-$ENV_DEV.sh && ./deploy-$PROJECT_NAME-$ENV_DEV.sh"
+        - echo 'Project $PROJECT_NAME $ENV_PROD has been configured'
