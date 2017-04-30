@@ -5,9 +5,9 @@ parameters:
     database_driver:   pdo_pgsql
     database_host:     127.0.0.1
     database_port:     5432
-    database_name:     ~
-    database_user:     ~
-    database_password: ~
+    database_name:     _museum-dev
+    database_user:     museum
+    database_password: museum
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
 
