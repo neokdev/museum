@@ -9,6 +9,7 @@ stages:
     - project_config_prod
 
 before_script:
+    - echo 'tata'
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - mkdir -p ~/.ssh
     - eval $(ssh-agent -s)
