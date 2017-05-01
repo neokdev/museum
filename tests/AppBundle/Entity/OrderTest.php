@@ -23,11 +23,16 @@ class OrderTest extends AbstractEntityTest
         $mockTicket = $this->getMockBuilder(Ticket::class)->getMock();
 
         return [
-            ['id', 'inte', 10],
+            ['id', 'integer', 10],
             ['dateVisit', 'datetime', new \DateTime()],
             ['typeTicket', 'string', 'Demi-journée'],
             ['email', 'string', 'john@doe.com'],
             ['orderNumber', 'string', 'ABCDE123456!'],
+            ['numberTickets', 'string', '4'],
+            ['totalPrice', 'string', '250.00'],
+            ['valid', 'boolean', false],
+            ['dateOrder', 'datetime', new \DateTime()],
+            ['tickets', 'collection', new ArrayCollection([$mockTicket])],
         ];
     }
 
@@ -38,6 +43,6 @@ class OrderTest extends AbstractEntityTest
      */
     protected function getEntityInstance()
     {
-//        return new Order();
+        return new Order();
     }
 }
