@@ -31,6 +31,7 @@ test_any_branch:
         - echo "Functionnal & unit tests"
         - vendor/bin/phpunit -vv
     after_script:
+        - git config --global push.default matching
         - git push development
 
 test:
