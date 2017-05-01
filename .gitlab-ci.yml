@@ -31,8 +31,7 @@ test_any_branch:
         - echo "Functionnal & unit tests"
         - vendor/bin/phpunit -vv
     after_script:
-        - git checkout development
-        - git merge "git branch | grep \*"
+        - git push development
 
 test:
     stage: test
