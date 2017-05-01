@@ -15,7 +15,9 @@ before_script:
     - ssh-add <(echo "$SERVER_PRIVATE_KEY")
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-# RUN UNIT TEST & FUNCTIONNALS TESTS ON DEVELOPMENT BRANCH
+######################################################################################################
+################ RUN UNITS TEST & FUNCTIONNALS TESTS ON EACH BRANCH ARE PUSHED #######################
+######################################################################################################
 test_any_branch:
     stage: test_any_branch
     image: amorvan/env_test
@@ -32,6 +34,10 @@ test_any_branch:
         - git config --global push.default matching
         - git push $GITLAB_URL HEAD:development
 
+
+######################################################################################################
+################ RUN UNITS TEST & FUNCTIONNALS TESTS ON DEVELOPMENT BRANCH ###########################
+######################################################################################################
 test:
     stage: test
     image: amorvan/env_test
