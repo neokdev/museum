@@ -30,7 +30,7 @@ test_any_branch:
         - echo "Functionnal & unit tests"
         - vendor/bin/phpunit -vv
         - git config --global push.default matching
-        - git push remotes/origin/development
+        - git remote --vvv
 
 test:
     stage: test
