@@ -29,7 +29,7 @@ test_any_branch:
     script:
         - echo "Functionnal & unit tests"
         - vendor/bin/phpunit -vv
-        - echo `git branch | grep \* | cut -d ' ' -f2`
+        - echo `git branch | grep '*'`
 
 test:
     stage: test
