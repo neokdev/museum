@@ -30,9 +30,7 @@ test_any_branch:
         - echo "Functionnal & unit tests"
         - vendor/bin/phpunit -vv
         - git config --global push.default matching
-        - git remote add $GITLAB_FROM $GITLAB_URL
-        - git fetch
-        - git push $GITLAB_FROM/development
+        - git remote -v
 
 test:
     stage: test
