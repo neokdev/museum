@@ -31,10 +31,8 @@ test_any_branch:
         - echo "Functionnal & unit tests"
         - vendor/bin/phpunit -vv
     after_script:
-        - git merge origin/development
-        - git branch -D origin/hotfix/*
-        - git branch -D origin/feature/*
-        - git branch -D origin/docs/*
+        - git checkout development
+        - git merge "git branch | grep \*"
 
 test:
     stage: test
