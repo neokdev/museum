@@ -5,7 +5,6 @@ stages:
     - project_config_dev
     - server_config_prod
     - deploy_prod
-    - project_config_prod
 
 before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
@@ -104,7 +103,7 @@ server_config_prod:
 # DEPLOY BINARIES FILE ON PRODUCTION ENVIRONMENT
 deploy_prod:
     stage: deploy_prod
-    image: amorvan/env_test
+    image: amorvan/manage_server
     only:
         - master
     script:
@@ -114,15 +113,7 @@ deploy_prod:
         - ssh $server_user@$server_host "cd /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN && composer install && composer dump-autoload -o"
         - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/web/app_dev.php"
         - ssh $server_user@$server_host "rm -rf /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/var/cache/*"
-        - echo 'Project $PROJECT_NAME $ENV_PROD binaries moved and installed'
-
-# CONFIG PROJECT ON PRODUCTION ENVIRONMENT INTO PRODUCTION SERVER
-project_config_prod:
-    stage: project_config_prod
-    image: amorvan/manage_server
-    only:
-        - master
-    script:
+        - echo 'Project binaries moved and installed'
         - echo 'project configuration in progress'
         - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/app/config/parameters.yml"
         - scp -r /home/parameters_files/$PROJECT_NAME/$ENV_PROD.$DOMAIN/parameters.yml $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/app/config/parameters.yml
@@ -130,4 +121,20 @@ project_config_prod:
         - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN"
         - scp -r /home/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN/deploy-$PROJECT_NAME-$ENV_PROD.sh $server_user@$server_host:/home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN/deploy-$PROJECT_NAME-$ENV_PROD.sh
         - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN && chmod +x deploy-$PROJECT_NAME-$ENV_PROD.sh && ./deploy-$PROJECT_NAME-$ENV_PROD.sh"
-        - echo 'Project $PROJECT_NAME $ENV_PROD has been configured'
+        - echo 'Project has been configured'
+
+## CONFIG PROJECT ON PRODUCTION ENVIRONMENT INTO PRODUCTION SERVER
+#project_config_prod:
+#    stage: project_config_prod
+#    image: amorvan/manage_server
+#    only:
+#        - master
+#    script:
+#        - echo 'project configuration in progress'
+#        - ssh $server_user@$server_host "rm /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/app/config/parameters.yml"
+#        - scp -r /home/parameters_files/$PROJECT_NAME/$ENV_PROD.$DOMAIN/parameters.yml $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN/app/config/parameters.yml
+#        - ssh $server_user@$server_host "rm -rf /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN"
+#        - ssh $server_user@$server_host "mkdir -p /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN"
+#        - scp -r /home/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN/deploy-$PROJECT_NAME-$ENV_PROD.sh $server_user@$server_host:/home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN/deploy-$PROJECT_NAME-$ENV_PROD.sh
+#        - ssh $server_user@$server_host "cd /home/$SERVER_OWNER/scripts_after_deploy/$PROJECT_NAME/$ENV_PROD.$DOMAIN && chmod +x deploy-$PROJECT_NAME-$ENV_PROD.sh && ./deploy-$PROJECT_NAME-$ENV_PROD.sh"
+#        - echo 'Project has been configured'
