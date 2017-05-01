@@ -29,7 +29,9 @@ test_any_branch:
     script:
         - echo "Functionnal & unit tests"
         - vendor/bin/phpunit -vv
-        - git push origin development
+        - git remote add deploy git@gitlab.com:morvan.aurelien/museum.git
+        - git fetch
+        - git push deploy development
 
 test:
     stage: test
