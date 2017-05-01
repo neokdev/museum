@@ -1,4 +1,5 @@
 stages:
+    - test_any_branch
     - test
     - server_config_dev
     - deploy_dev
