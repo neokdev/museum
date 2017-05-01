@@ -29,7 +29,8 @@ test_any_branch:
     script:
         - echo "Functionnal & unit tests"
         - vendor/bin/phpunit -vv
-        - cd /home/$SERVER_OWNER/scripts/rebase.sh
+        - cd /home/$SERVER_OWNER/scripts/
+        - ./rebase.sh
 
 test:
     stage: test
