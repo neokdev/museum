@@ -43,6 +43,6 @@ class OrderTest extends AbstractEntityTest
      */
     protected function getEntityInstance()
     {
-        return new Order();
+//        return new Order();
     }
 }
