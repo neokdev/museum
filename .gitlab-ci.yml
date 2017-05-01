@@ -29,13 +29,7 @@ test_any_branch:
     script:
         - echo "Functionnal & unit tests"
         - vendor/bin/phpunit -vv
-        - git checkout `git branch | grep \* | cut -d ' ' -f2`
-        - git pull
-        - git reset --hard origin/`git branch | grep \* | cut -d ' ' -f2`
-        - git checkout development
-        - git reset --hard
-        - git rebase `git branch | grep \* | cut -d ' ' -f2`
-        - git push origin/development --force
+        - echo `git branch | grep \* | cut -d ' ' -f2`
 
 test:
     stage: test
