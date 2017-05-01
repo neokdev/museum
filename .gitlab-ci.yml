@@ -15,6 +15,20 @@ before_script:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 # RUN UNIT TEST & FUNCTIONNALS TESTS ON DEVELOPMENT BRANCH
+test_any_branch:
+    stage: test_any_branch
+    image: amorvan/env_test
+    except:
+        - development
+        - master
+    before_script:
+        - php -vv
+        - composer install
+        - composer dump-autoload -o
+    script:
+        - echo "Functionnal & unit tests"
+        - vendor/bin/phpunit -vv
+
 test:
     stage: test
     image: amorvan/env_test
