@@ -108,6 +108,7 @@ deploy_prod:
         - master
     script:
         - echo 'Deployment in progress'
+        - echo 'VBNTM'
         - scp -r ./* $server_user@$server_host:/var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN
         - echo 'Install vendor'
         - ssh $server_user@$server_host "cd /var/www/html/$PROJECT_NAME/$ENV_PROD.$DOMAIN && composer install && composer dump-autoload -o"
