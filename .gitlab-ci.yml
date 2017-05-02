@@ -30,7 +30,8 @@ test_any_branch:
         - composer dump-autoload -o
     script:
         - echo "Functionnal & unit tests"
-        - php /home/$SERVER_OWNER/scripts/coverage.php
+        - vendor/bin/phpunit -vv
+        - php /home/$SERVER_OWNER/scripts/coverage_$COVERAGE_PERCENT.php
         - git config --global push.default matching
         - git push $GITLAB_URL HEAD:development
 
