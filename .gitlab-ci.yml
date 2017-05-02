@@ -31,7 +31,7 @@ test_any_branch:
     script:
         - echo "Functionnal & unit tests"
         - vendor/bin/phpunit -v --coverage-text
-        - php /home/$SERVER_OWNER/scripts/coverage.php
+        - php /home/$SERVER_OWNER/coverage.sh
         - git config --global push.default matching
         - git push $GITLAB_URL HEAD:development
 
