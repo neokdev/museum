@@ -29,6 +29,8 @@ test_any_branch:
         - composer install
         - composer dump-autoload -o
     script:
+        - echo "----- Check Coding Syle---------"
+        - ./home/$SERVER_OWNER/scripts/phpcs.sh
         - echo "--------------------------------"
         - echo "---Functionnal & unit tests-----"
         - echo "--------------------------------"
