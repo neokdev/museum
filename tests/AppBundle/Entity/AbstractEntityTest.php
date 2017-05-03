@@ -3,13 +3,14 @@
 namespace Tests\AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * Class AbstractEntityTest.
  */
-abstract class AbstractEntityTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractEntityTest extends TestCase
 {
     /**
      * @var \Closure
@@ -67,7 +68,7 @@ abstract class AbstractEntityTest extends \PHPUnit_Framework_TestCase
      * @group test-entities
      * @dataProvider entityPropertyProvider
      */
-    public function testGetterAndSetter($propertyName, $propertyType, $propertyValue, array $doNotTest = array())
+    public function testGetterAndSetter($propertyName, $propertyType, $propertyValue, array $doNotTest = [])
     {
         // check initial value
         $this->assertEmpty(self::$accessor->getValue($this->entityObject, $propertyName));

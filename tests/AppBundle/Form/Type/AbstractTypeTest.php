@@ -23,7 +23,7 @@ abstract class AbstractTypeTest extends TypeTestCase
     {
         parent::setUp();
 
-        $validator = $this->getMock(ValidatorInterface::class);
+        $validator = $this->createMock(ValidatorInterface::class);
         $validator->method('validate')->will(($this->returnValue(new ConstraintViolationList())));
         $formTypeExtension = new FormTypeValidatorExtension($validator);
         $coreExtension = new CoreExtension();
