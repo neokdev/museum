@@ -36,9 +36,6 @@ test_any_branch:
         - echo "--------------------------------"
         - vendor/bin/phpunit -vv --colors=always
         - echo "--------------------------------------------------"
-        - echo "---Code Coverage $COVERAGE_PERCENT % required-----"
-        - echo "--------------------------------------------------"
-        - php /home/$SERVER_OWNER/scripts/coverage_$COVERAGE_PERCENT.php
         - git config --global push.default matching
         - git push $GITLAB_URL HEAD:development
 
